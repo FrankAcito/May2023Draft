@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Euclidean distance for quantitative features | Predictive analytics with KNIME</title>
+  <meta name="description" content="This is a draft." />
+  <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Euclidean distance for quantitative features | Predictive analytics with KNIME" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="This is a draft." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Euclidean distance for quantitative features | Predictive analytics with KNIME" />
+  
+  <meta name="twitter:description" content="This is a draft." />
+  
+
+<meta name="author" content="Acito" />
+
+
+<meta name="date" content="2023-06-04" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="select-a-measure-of-similarity-or-distance.html"/>
+<link rel="next" href="select-a-clustering-method.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<link href="libs/tabwid-1.1.3/tabwid.css" rel="stylesheet" />
+<script src="libs/tabwid-1.1.3/tabwid.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="...">Analytics with KNIME</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a>
+<ul>
+<li class="chapter" data-level="" data-path="dedication.html"><a href="dedication.html"><i class="fa fa-check"></i>Dedication</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="introduction-to-analytics.html"><a href="introduction-to-analytics.html"><i class="fa fa-check"></i><b>1</b> Introduction to analytics</a>
+<ul>
+<li class="chapter" data-level="" data-path="introduction-to-analytics.html"><a href="introduction-to-analytics.html#the-growing-emphasis-on-analytics"><i class="fa fa-check"></i>The growing emphasis on analytics</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-analytics.html"><a href="introduction-to-analytics.html#amount-variety-and-velocity-of-data"><i class="fa fa-check"></i>Amount, variety, and velocity of data</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-analytics.html"><a href="introduction-to-analytics.html#better-faster-easier-to-use-and-less-expensive-hardware-and-software"><i class="fa fa-check"></i>Better, faster, easier to use, and less expensive hardware and software</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-analytics.html"><a href="introduction-to-analytics.html#demand-for-fact-based-data-supported-decision-making"><i class="fa fa-check"></i>Demand for fact-based, data-supported decision making</a></li>
+<li class="chapter" data-level="" data-path="applications-of-analytics.html"><a href="applications-of-analytics.html"><i class="fa fa-check"></i>Applications of analytics</a>
+<ul>
+<li class="chapter" data-level="" data-path="applications-of-analytics.html"><a href="applications-of-analytics.html#example-appliction-to-health-insurance"><i class="fa fa-check"></i>Example appliction to health insurance</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="the-citizen-data-scientist.html"><a href="the-citizen-data-scientist.html"><i class="fa fa-check"></i>The citizen data scientist</a></li>
+<li class="chapter" data-level="" data-path="the-analytics-process.html"><a href="the-analytics-process.html"><i class="fa fa-check"></i>The analytics process</a></li>
+<li class="chapter" data-level="" data-path="outline-of-this-book.html"><a href="outline-of-this-book.html"><i class="fa fa-check"></i>Outline of this book</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="problem-definition.html"><a href="problem-definition.html"><i class="fa fa-check"></i><b>2</b> Problem definition</a>
+<ul>
+<li class="chapter" data-level="" data-path="expert-views-on-problem-definition.html"><a href="expert-views-on-problem-definition.html"><i class="fa fa-check"></i>Expert views on problem definition</a>
+<ul>
+<li class="chapter" data-level="" data-path="expert-views-on-problem-definition.html"><a href="expert-views-on-problem-definition.html#telecom-example"><i class="fa fa-check"></i>Telecom example</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="defining-the-analytics-problem.html"><a href="defining-the-analytics-problem.html"><i class="fa fa-check"></i>Defining the analytics problem</a>
+<ul>
+<li class="chapter" data-level="" data-path="defining-the-analytics-problem.html"><a href="defining-the-analytics-problem.html#properly-framing-the-problem"><i class="fa fa-check"></i>Properly framing the problem</a></li>
+<li class="chapter" data-level="" data-path="defining-the-analytics-problem.html"><a href="defining-the-analytics-problem.html#example-of-solving-a-more-straightforward-problem"><i class="fa fa-check"></i>Example of solving a more straightforward problem</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="structured-versus-unstructured-problems.html"><a href="structured-versus-unstructured-problems.html"><i class="fa fa-check"></i>Structured versus unstructured problems</a></li>
+<li class="chapter" data-level="" data-path="summary.html"><a href="summary.html"><i class="fa fa-check"></i>Summary</a></li>
+<li class="chapter" data-level="" data-path="appendix.html"><a href="appendix.html"><i class="fa fa-check"></i>Appendix</a>
+<ul>
+<li class="chapter" data-level="" data-path="appendix.html"><a href="appendix.html#a1-right-to-left-thinking"><i class="fa fa-check"></i>A1: Right to left thinking</a></li>
+<li class="chapter" data-level="" data-path="appendix.html"><a href="appendix.html#a2-reversing-the-problem"><i class="fa fa-check"></i>A2: Reversing the problem</a></li>
+<li class="chapter" data-level="" data-path="appendix.html"><a href="appendix.html#a3-opening-up-by-asking-whys."><i class="fa fa-check"></i>A3: Opening up by asking "whys."</a></li>
+<li class="chapter" data-level="" data-path="appendix.html"><a href="appendix.html#a4-challenge-assumptions"><i class="fa fa-check"></i>A4: Challenge assumptions</a></li>
+<li class="chapter" data-level="" data-path="appendix.html"><a href="appendix.html#a5-chunking"><i class="fa fa-check"></i>A5: Chunking</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="exercises.html"><a href="exercises.html"><i class="fa fa-check"></i>Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="introduction-to-knime.html"><a href="introduction-to-knime.html"><i class="fa fa-check"></i><b>3</b> Introduction to KNIME</a>
+<ul>
+<li class="chapter" data-level="" data-path="introduction-to-knime.html"><a href="introduction-to-knime.html#knime-features"><i class="fa fa-check"></i>KNIME features</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-knime.html"><a href="introduction-to-knime.html#the-knime-workbench"><i class="fa fa-check"></i>The KNIME Workbench</a></li>
+<li class="chapter" data-level="" data-path="elements-of-the-knime-workbench.html"><a href="elements-of-the-knime-workbench.html"><i class="fa fa-check"></i>Elements of the KNIME Workbench</a></li>
+<li class="chapter" data-level="" data-path="learning-to-use-knime.html"><a href="learning-to-use-knime.html"><i class="fa fa-check"></i>Learning to use KNIME</a></li>
+<li class="chapter" data-level="" data-path="knime-extensions-and-integrations.html"><a href="knime-extensions-and-integrations.html"><i class="fa fa-check"></i>KNIME extensions and integrations</a>
+<ul>
+<li class="chapter" data-level="" data-path="knime-extensions-and-integrations.html"><a href="knime-extensions-and-integrations.html#data-types-in-knime"><i class="fa fa-check"></i>Data types in KNIME</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="example-1-predicting-heart-disease.html"><a href="example-1-predicting-heart-disease.html"><i class="fa fa-check"></i>Example #1: Predicting heart disease</a>
+<ul>
+<li class="chapter" data-level="" data-path="example-1-predicting-heart-disease.html"><a href="example-1-predicting-heart-disease.html#read-data-from-a-csv-file"><i class="fa fa-check"></i>Read data from a CSV file</a></li>
+<li class="chapter" data-level="" data-path="example-1-predicting-heart-disease.html"><a href="example-1-predicting-heart-disease.html#creating-training-and-test-subsets-of-data"><i class="fa fa-check"></i>Creating training and test subsets of data</a></li>
+<li class="chapter" data-level="" data-path="example-1-predicting-heart-disease.html"><a href="example-1-predicting-heart-disease.html#developing-a-logistic-regression-model"><i class="fa fa-check"></i>Developing a logistic regression model</a></li>
+<li class="chapter" data-level="" data-path="example-1-predicting-heart-disease.html"><a href="example-1-predicting-heart-disease.html#calculating-predictions-from-a-model"><i class="fa fa-check"></i>Calculating predictions from a model</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="evaluating-predictive-accuracy.html"><a href="evaluating-predictive-accuracy.html"><i class="fa fa-check"></i>Evaluating predictive accuracy</a></li>
+<li class="chapter" data-level="" data-path="example-2-preparation-of-hospital-data.html"><a href="example-2-preparation-of-hospital-data.html"><i class="fa fa-check"></i>Example #2: Preparation of hospital data</a></li>
+<li class="chapter" data-level="" data-path="node-descriptions-for-figure-3.10-workflow.html"><a href="node-descriptions-for-figure-3.10-workflow.html"><i class="fa fa-check"></i>Node descriptions for Figure 3.10 workflow</a></li>
+<li class="chapter" data-level="" data-path="steps-to-run-the-figure-3.10-workflow.html"><a href="steps-to-run-the-figure-3.10-workflow.html"><i class="fa fa-check"></i>Steps to run the Figure 3.10 workflow</a>
+<ul>
+<li class="chapter" data-level="" data-path="steps-to-run-the-figure-3.10-workflow.html"><a href="steps-to-run-the-figure-3.10-workflow.html#descriptive-statistics-from-the-data-explorer"><i class="fa fa-check"></i>Descriptive statistics from the Data Explorer</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="flow-variables.html"><a href="flow-variables.html"><i class="fa fa-check"></i>Flow variables</a>
+<ul>
+<li class="chapter" data-level="" data-path="flow-variables.html"><a href="flow-variables.html#convert-a-table-row-into-a-flow-variable"><i class="fa fa-check"></i>Convert a table row into a flow variable</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="node-descriptions-for-figure-3.13-workflow.html"><a href="node-descriptions-for-figure-3.13-workflow.html"><i class="fa fa-check"></i>Node descriptions for Figure 3.13 workflow</a></li>
+<li class="chapter" data-level="" data-path="export-a-configuration-from-a-node-as-a-flow-variable.html"><a href="export-a-configuration-from-a-node-as-a-flow-variable.html"><i class="fa fa-check"></i>Export a configuration from a node as a flow variable</a></li>
+<li class="chapter" data-level="" data-path="node-descriptions-for-figure-3.14-workflow.html"><a href="node-descriptions-for-figure-3.14-workflow.html"><i class="fa fa-check"></i>Node descriptions for Figure 3.14 workflow</a></li>
+<li class="chapter" data-level="" data-path="creating-a-global-flow-variable.html"><a href="creating-a-global-flow-variable.html"><i class="fa fa-check"></i>Creating a global flow variable</a>
+<ul>
+<li class="chapter" data-level="" data-path="creating-a-global-flow-variable.html"><a href="creating-a-global-flow-variable.html#creating-a-string-flow-variable"><i class="fa fa-check"></i>Creating a string flow variable</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="node-descriptions-for-figure-3.15-workflow.html"><a href="node-descriptions-for-figure-3.15-workflow.html"><i class="fa fa-check"></i>Node descriptions for Figure 3.15 workflow</a></li>
+<li class="chapter" data-level="" data-path="loops-in-knime.html"><a href="loops-in-knime.html"><i class="fa fa-check"></i>Loops in KNIME</a>
+<ul>
+<li class="chapter" data-level="" data-path="loops-in-knime.html"><a href="loops-in-knime.html#run-a-loop-a-preset-number-of-times"><i class="fa fa-check"></i>Run a loop a preset number of times</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="node-descriptions-for-figure-3.17-workflow.html"><a href="node-descriptions-for-figure-3.17-workflow.html"><i class="fa fa-check"></i>Node descriptions for Figure 3.17 workflow</a></li>
+<li class="chapter" data-level="" data-path="loop-on-a-set-of-columns.html"><a href="loop-on-a-set-of-columns.html"><i class="fa fa-check"></i>Loop on a set of columns</a></li>
+<li class="chapter" data-level="" data-path="node-descriptions-for-figure-3.18-workflow.html"><a href="node-descriptions-for-figure-3.18-workflow.html"><i class="fa fa-check"></i>Node descriptions for Figure 3.18 workflow</a></li>
+<li class="chapter" data-level="" data-path="inputs-and-outputs-of-the-loop-on-columns.html"><a href="inputs-and-outputs-of-the-loop-on-columns.html"><i class="fa fa-check"></i>Inputs and outputs of the loop on columns</a></li>
+<li class="chapter" data-level="" data-path="appendix-1-integrating-r-into-knime.html"><a href="appendix-1-integrating-r-into-knime.html"><i class="fa fa-check"></i>Appendix 1: Integrating R into KNIME</a></li>
+<li class="chapter" data-level="" data-path="appendix-2-regex-for-search-patterns.html"><a href="appendix-2-regex-for-search-patterns.html"><i class="fa fa-check"></i>Appendix 2: Regex for search patterns</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="data-preparation.html"><a href="data-preparation.html"><i class="fa fa-check"></i><b>4</b> Data Preparation</a>
+<ul>
+<li class="chapter" data-level="" data-path="obtaining-the-needed-data.html"><a href="obtaining-the-needed-data.html"><i class="fa fa-check"></i>Obtaining the needed data</a></li>
+<li class="chapter" data-level="" data-path="data-cleaning.html"><a href="data-cleaning.html"><i class="fa fa-check"></i>Data cleaning</a></li>
+<li class="chapter" data-level="" data-path="data-cleaning-node-descriptions.html"><a href="data-cleaning-node-descriptions.html"><i class="fa fa-check"></i>Data cleaning node descriptions</a></li>
+<li class="chapter" data-level="" data-path="missing-values.html"><a href="missing-values.html"><i class="fa fa-check"></i>Missing values</a></li>
+<li class="chapter" data-level="" data-path="types-of-missing-values.html"><a href="types-of-missing-values.html"><i class="fa fa-check"></i>Types of missing values</a></li>
+<li class="chapter" data-level="" data-path="handling-missing-values.html"><a href="handling-missing-values.html"><i class="fa fa-check"></i>Handling missing values</a></li>
+<li class="chapter" data-level="" data-path="excessive-missing-values.html"><a href="excessive-missing-values.html"><i class="fa fa-check"></i>Excessive missing values</a></li>
+<li class="chapter" data-level="" data-path="node-descriptions-for-figure-4.2-workflow.html"><a href="node-descriptions-for-figure-4.2-workflow.html"><i class="fa fa-check"></i>Node descriptions for Figure 4.2 workflow</a></li>
+<li class="chapter" data-level="" data-path="node-descriptions-for-figure-4.3-workflow.html"><a href="node-descriptions-for-figure-4.3-workflow.html"><i class="fa fa-check"></i>Node descriptions for Figure 4.3 workflow</a></li>
+<li><a href="section.html#section" id="toc-section"></a></li>
+<li class="chapter" data-level="" data-path="flagging-missing-values.html"><a href="flagging-missing-values.html"><i class="fa fa-check"></i>Flagging missing values</a></li>
+<li class="chapter" data-level="" data-path="node-descriptions-for-figure-4.4-workflow.html"><a href="node-descriptions-for-figure-4.4-workflow.html"><i class="fa fa-check"></i>Node descriptions for Figure 4.4 workflow</a></li>
+<li class="chapter" data-level="" data-path="results-from-workflow-in-figure-4.4-workflow.html"><a href="results-from-workflow-in-figure-4.4-workflow.html"><i class="fa fa-check"></i>Results from workflow in Figure 4.4 workflow</a></li>
+<li class="chapter" data-level="" data-path="imputation-methods.html"><a href="imputation-methods.html"><i class="fa fa-check"></i>Imputation methods</a></li>
+<li class="chapter" data-level="" data-path="nodes-for-handling-missing-values-in-knime.html"><a href="nodes-for-handling-missing-values-in-knime.html"><i class="fa fa-check"></i>Nodes for handling missing values in KNIME</a></li>
+<li class="chapter" data-level="" data-path="outliers.html"><a href="outliers.html"><i class="fa fa-check"></i>Outliers</a></li>
+<li class="chapter" data-level="" data-path="univariate-outlier-detection-methods.html"><a href="univariate-outlier-detection-methods.html"><i class="fa fa-check"></i>Univariate outlier detection methods</a></li>
+<li class="chapter" data-level="" data-path="node-descriptions-for-figure-4.5-workflow.html"><a href="node-descriptions-for-figure-4.5-workflow.html"><i class="fa fa-check"></i>Node descriptions for Figure 4.5 workflow</a></li>
+<li><a href="section-1.html#section-1" id="toc-section-1"></a></li>
+<li><a href="section-2.html#section-2" id="toc-section-2"></a></li>
+<li><a href="section-3.html#section-3" id="toc-section-3"></a></li>
+<li class="chapter" data-level="" data-path="node-descriptions-for-figure-4.10-workflow.html"><a href="node-descriptions-for-figure-4.10-workflow.html"><i class="fa fa-check"></i>Node descriptions for Figure 4.10 workflow</a></li>
+<li><a href="section-4.html#section-4" id="toc-section-4"></a></li>
+<li class="chapter" data-level="" data-path="detecting-multivariate-outliers.html"><a href="detecting-multivariate-outliers.html"><i class="fa fa-check"></i>Detecting multivariate outliers</a></li>
+<li class="chapter" data-level="" data-path="node-descriptions-for-figure-4.13-workflow.html"><a href="node-descriptions-for-figure-4.13-workflow.html"><i class="fa fa-check"></i>Node descriptions for Figure 4.13 workflow</a></li>
+<li class="chapter" data-level="" data-path="handling-outliers.html"><a href="handling-outliers.html"><i class="fa fa-check"></i>Handling outliers</a></li>
+<li class="chapter" data-level="" data-path="feature-engineering.html"><a href="feature-engineering.html"><i class="fa fa-check"></i>Feature engineering</a></li>
+<li><a href="section-5.html#section-5" id="toc-section-5"></a></li>
+<li class="chapter" data-level="" data-path="transformations-to-reduce-skewness.html"><a href="transformations-to-reduce-skewness.html"><i class="fa fa-check"></i>Transformations to reduce skewness</a></li>
+<li class="chapter" data-level="" data-path="deriving-new-variables.html"><a href="deriving-new-variables.html"><i class="fa fa-check"></i>Deriving new variables</a></li>
+<li class="chapter" data-level="" data-path="example-of-data-preparation.html"><a href="example-of-data-preparation.html"><i class="fa fa-check"></i>Example of data preparation</a></li>
+<li class="chapter" data-level="" data-path="node-descriptions-for-figure-4.16-workflow.html"><a href="node-descriptions-for-figure-4.16-workflow.html"><i class="fa fa-check"></i>Node descriptions for Figure 4.16 workflow</a></li>
+<li><a href="section-6.html#section-6" id="toc-section-6"></a></li>
+<li class="chapter" data-level="" data-path="node-descriptions-figure-4.17-workflow.html"><a href="node-descriptions-figure-4.17-workflow.html"><i class="fa fa-check"></i>Node descriptions Figure 4.17 workflow</a></li>
+<li><a href="section-7.html#section-7" id="toc-section-7"></a></li>
+<li class="chapter" data-level="" data-path="graphical-variable-descriptions.html"><a href="graphical-variable-descriptions.html"><i class="fa fa-check"></i>Graphical variable descriptions</a></li>
+<li class="chapter" data-level="" data-path="dealing-with-outliers-and-extreme-values.html"><a href="dealing-with-outliers-and-extreme-values.html"><i class="fa fa-check"></i>Dealing with outliers and extreme values</a></li>
+<li class="chapter" data-level="" data-path="node-descriptions-for-figure-4.19-workflow..html"><a href="node-descriptions-for-figure-4.19-workflow..html"><i class="fa fa-check"></i>Node descriptions for Figure 4.19 workflow.</a></li>
+<li><a href="section-8.html#section-8" id="toc-section-8"></a></li>
+<li class="chapter" data-level="" data-path="summary-1.html"><a href="summary-1.html"><i class="fa fa-check"></i>Summary</a></li>
+<li class="chapter" data-level="" data-path="appendix-1-r-code-for-figure-4.10-workflow.html"><a href="appendix-1-r-code-for-figure-4.10-workflow.html"><i class="fa fa-check"></i>Appendix 1: R Code for Figure 4.10 workflow</a></li>
+<li class="chapter" data-level="" data-path="appendix-2-r-code-for-figure-4.13-workflow.html"><a href="appendix-2-r-code-for-figure-4.13-workflow.html"><i class="fa fa-check"></i>Appendix 2: R Code for Figure 4.13 workflow</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="dimensionality-reduction.html"><a href="dimensionality-reduction.html"><i class="fa fa-check"></i><b>5</b> Dimensionality reduction</a>
+<ul>
+<li class="chapter" data-level="" data-path="other-problems.html"><a href="other-problems.html"><i class="fa fa-check"></i>Other problems</a></li>
+<li class="chapter" data-level="" data-path="approaches-to-dimension-reduction.html"><a href="approaches-to-dimension-reduction.html"><i class="fa fa-check"></i>Approaches to dimension reduction</a>
+<ul>
+<li class="chapter" data-level="" data-path="approaches-to-dimension-reduction.html"><a href="approaches-to-dimension-reduction.html#removing-highly-correlated-variables"><i class="fa fa-check"></i>Removing highly correlated variables</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="node-descriptions-for-figure-5.1-workflow.html"><a href="node-descriptions-for-figure-5.1-workflow.html"><i class="fa fa-check"></i>Node descriptions for Figure 5.1 workflow</a></li>
+<li class="chapter" data-level="" data-path="correlation-matrix.html"><a href="correlation-matrix.html"><i class="fa fa-check"></i>Correlation matrix</a>
+<ul>
+<li class="chapter" data-level="" data-path="correlation-matrix.html"><a href="correlation-matrix.html#removing-variables-with-excessive-missing-values"><i class="fa fa-check"></i>Removing variables with excessive missing values</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="node-descriptions-for-figure-5.2-workflow.html"><a href="node-descriptions-for-figure-5.2-workflow.html"><i class="fa fa-check"></i>Node descriptions for Figure 5.2 workflow</a></li>
+<li class="chapter" data-level="" data-path="zero-or-near-zero-variance.html"><a href="zero-or-near-zero-variance.html"><i class="fa fa-check"></i>Zero or near-zero variance</a></li>
+<li class="chapter" data-level="" data-path="node-descriptions-for-figure-5.3-workflow.html"><a href="node-descriptions-for-figure-5.3-workflow.html"><i class="fa fa-check"></i>Node descriptions for Figure 5.3 workflow</a></li>
+<li class="chapter" data-level="" data-path="selection-using-filters-with-a-target-variable.html"><a href="selection-using-filters-with-a-target-variable.html"><i class="fa fa-check"></i>Selection using filters with a target variable</a>
+<ul>
+<li class="chapter" data-level="" data-path="selection-using-filters-with-a-target-variable.html"><a href="selection-using-filters-with-a-target-variable.html#selection-using-wrapper-methods"><i class="fa fa-check"></i>Selection using wrapper methods</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="principal-components-analysis.html"><a href="principal-components-analysis.html"><i class="fa fa-check"></i>Principal components analysis</a></li>
+<li class="chapter" data-level="" data-path="pca-an-enigenvectors-decomposition.html"><a href="pca-an-enigenvectors-decomposition.html"><i class="fa fa-check"></i>PCA: An enigenvectors decomposition</a></li>
+<li class="chapter" data-level="" data-path="steps-in-using-pca.html"><a href="steps-in-using-pca.html"><i class="fa fa-check"></i>Steps in using PCA</a></li>
+<li class="chapter" data-level="" data-path="example-of-using-pca.html"><a href="example-of-using-pca.html"><i class="fa fa-check"></i>Example of using PCA</a></li>
+<li class="chapter" data-level="" data-path="auto-ratings-correlations.html"><a href="auto-ratings-correlations.html"><i class="fa fa-check"></i>Auto ratings correlations</a></li>
+<li class="chapter" data-level="" data-path="node-descriptions-for-figure-5.6-workflow.html"><a href="node-descriptions-for-figure-5.6-workflow.html"><i class="fa fa-check"></i>Node descriptions for Figure 5.6 workflow</a></li>
+<li class="chapter" data-level="" data-path="eigenvalues.html"><a href="eigenvalues.html"><i class="fa fa-check"></i>Eigenvalues</a></li>
+<li class="chapter" data-level="" data-path="the-scree-plot.html"><a href="the-scree-plot.html"><i class="fa fa-check"></i>The scree plot</a>
+<ul>
+<li class="chapter" data-level="" data-path="the-scree-plot.html"><a href="the-scree-plot.html#considerations-regarding-pca"><i class="fa fa-check"></i>Considerations regarding PCA</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="other-issues-with-pca.html"><a href="other-issues-with-pca.html"><i class="fa fa-check"></i>Other issues with PCA</a></li>
+<li class="chapter" data-level="" data-path="appendix-intuition-behind-principal-components.html"><a href="appendix-intuition-behind-principal-components.html"><i class="fa fa-check"></i>Appendix: Intuition behind principal components</a></li>
+<li class="chapter" data-level="" data-path="summary-2.html"><a href="summary-2.html"><i class="fa fa-check"></i>Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="ordinary-least-squares-regression.html"><a href="ordinary-least-squares-regression.html"><i class="fa fa-check"></i><b>6</b> Ordinary least squares regression</a>
+<ul>
+<li class="chapter" data-level="" data-path="intuition-about-simple-linear-regression.html"><a href="intuition-about-simple-linear-regression.html"><i class="fa fa-check"></i>Intuition about simple linear regression</a></li>
+<li class="chapter" data-level="" data-path="multiple-regression.html"><a href="multiple-regression.html"><i class="fa fa-check"></i>Multiple regression</a></li>
+<li class="chapter" data-level="" data-path="building-a-predictive-regression-model.html"><a href="building-a-predictive-regression-model.html"><i class="fa fa-check"></i>Building a predictive regression model</a></li>
+<li class="chapter" data-level="" data-path="variable-types-in-regression.html"><a href="variable-types-in-regression.html"><i class="fa fa-check"></i>Variable types in regression</a></li>
+<li class="chapter" data-level="" data-path="coding-nominal-variables.html"><a href="coding-nominal-variables.html"><i class="fa fa-check"></i>Coding nominal variables</a></li>
+<li class="chapter" data-level="" data-path="coding-ordinal-variables.html"><a href="coding-ordinal-variables.html"><i class="fa fa-check"></i>Coding ordinal variables</a></li>
+<li class="chapter" data-level="" data-path="nonlinear-relationships.html"><a href="nonlinear-relationships.html"><i class="fa fa-check"></i>Nonlinear relationships</a></li>
+<li class="chapter" data-level="" data-path="regression-with-a-nonlinear-relationship.html"><a href="regression-with-a-nonlinear-relationship.html"><i class="fa fa-check"></i>Regression with a nonlinear relationship</a></li>
+<li class="chapter" data-level="" data-path="regressing-results-with-nonlinear-data-example.html"><a href="regressing-results-with-nonlinear-data-example.html"><i class="fa fa-check"></i>Regressing results with nonlinear data example</a></li>
+<li class="chapter" data-level="" data-path="residual-plots-clearly-show-nonlinearities.html"><a href="residual-plots-clearly-show-nonlinearities.html"><i class="fa fa-check"></i>Residual plots clearly show nonlinearities</a></li>
+<li class="chapter" data-level="" data-path="using-a-polynomial-model.html"><a href="using-a-polynomial-model.html"><i class="fa fa-check"></i>Using a polynomial model</a></li>
+<li class="chapter" data-level="" data-path="residuals-from-the-polynomial-model.html"><a href="residuals-from-the-polynomial-model.html"><i class="fa fa-check"></i>Residuals from the polynomial model</a></li>
+<li class="chapter" data-level="" data-path="transformations-to-deal-with-nonlinearity.html"><a href="transformations-to-deal-with-nonlinearity.html"><i class="fa fa-check"></i>Transformations to deal with nonlinearity</a></li>
+<li class="chapter" data-level="" data-path="evaluating-predictive-accuracy-1.html"><a href="evaluating-predictive-accuracy-1.html"><i class="fa fa-check"></i>Evaluating predictive accuracy</a></li>
+<li class="chapter" data-level="" data-path="examples.html"><a href="examples.html"><i class="fa fa-check"></i>Examples</a>
+<ul>
+<li class="chapter" data-level="" data-path="examples.html"><a href="examples.html#ordinary-least-squares-regression-1"><i class="fa fa-check"></i>Ordinary least squares regression</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="node-descriptions-for-the-figure-6.8-workflow.html"><a href="node-descriptions-for-the-figure-6.8-workflow.html"><i class="fa fa-check"></i>Node descriptions for the Figure 6.8 workflow</a></li>
+<li class="chapter" data-level="" data-path="comparison-of-ols-and-stepwise-regression.html"><a href="comparison-of-ols-and-stepwise-regression.html"><i class="fa fa-check"></i>Comparison of OLS and Stepwise regression</a></li>
+<li class="chapter" data-level="" data-path="node-descriptions-for-the-figure-6.9-workflow.html"><a href="node-descriptions-for-the-figure-6.9-workflow.html"><i class="fa fa-check"></i>Node descriptions for the Figure 6.9 workflow</a></li>
+<li class="chapter" data-level="" data-path="using-regularization-for-predictor-selection.html"><a href="using-regularization-for-predictor-selection.html"><i class="fa fa-check"></i>Using regularization for predictor selection</a></li>
+<li class="chapter" data-level="" data-path="regularization-formulas.html"><a href="regularization-formulas.html"><i class="fa fa-check"></i>Regularization formulas</a></li>
+<li class="chapter" data-level="" data-path="node-descriptions-for-the-figure-6.10-workflow.html"><a href="node-descriptions-for-the-figure-6.10-workflow.html"><i class="fa fa-check"></i>Node descriptions for the Figure 6.10 workflow</a></li>
+<li class="chapter" data-level="" data-path="comparison-of-results.html"><a href="comparison-of-results.html"><i class="fa fa-check"></i>Comparison of results</a></li>
+<li class="chapter" data-level="" data-path="summary-3.html"><a href="summary-3.html"><i class="fa fa-check"></i>Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="logistic-regression.html"><a href="logistic-regression.html"><i class="fa fa-check"></i><b>7</b> Logistic regression</a>
+<ul>
+<li class="chapter" data-level="" data-path="intuition-about-binary-logistic-regression.html"><a href="intuition-about-binary-logistic-regression.html"><i class="fa fa-check"></i>Intuition about binary logistic regression</a></li>
+<li class="chapter" data-level="" data-path="example-using-simulated-data.html"><a href="example-using-simulated-data.html"><i class="fa fa-check"></i>Example using simulated data</a></li>
+<li class="chapter" data-level="" data-path="node-descriptions-for-the-figure-7.3-workflow.html"><a href="node-descriptions-for-the-figure-7.3-workflow.html"><i class="fa fa-check"></i>Node descriptions for the Figure 7.3 workflow</a></li>
+<li class="chapter" data-level="" data-path="the-logsitic-analysis-results.html"><a href="the-logsitic-analysis-results.html"><i class="fa fa-check"></i>The logsitic analysis results</a></li>
+<li class="chapter" data-level="" data-path="estimating-probabilities.html"><a href="estimating-probabilities.html"><i class="fa fa-check"></i>Estimating probabilities</a></li>
+<li class="chapter" data-level="" data-path="the-nonlinearity-of-logistic-regression-coefficients.html"><a href="the-nonlinearity-of-logistic-regression-coefficients.html"><i class="fa fa-check"></i>The nonlinearity of logistic regression coefficients</a></li>
+<li class="chapter" data-level="" data-path="interpreting-logistic-results-using-log-odds.html"><a href="interpreting-logistic-results-using-log-odds.html"><i class="fa fa-check"></i>Interpreting logistic results using log odds</a></li>
+<li class="chapter" data-level="" data-path="evaluating-classification-models.html"><a href="evaluating-classification-models.html"><i class="fa fa-check"></i>Evaluating classification models</a>
+<ul>
+<li class="chapter" data-level="" data-path="evaluating-classification-models.html"><a href="evaluating-classification-models.html#metrics-for-models-with-binary-targets"><i class="fa fa-check"></i>Metrics for models with binary targets</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="confusion-matrices.html"><a href="confusion-matrices.html"><i class="fa fa-check"></i>Confusion matrices</a></li>
+<li class="chapter" data-level="" data-path="roc-curves.html"><a href="roc-curves.html"><i class="fa fa-check"></i>ROC curves</a></li>
+<li class="chapter" data-level="" data-path="metrics-with-multiple-level-categorical-targets.html"><a href="metrics-with-multiple-level-categorical-targets.html"><i class="fa fa-check"></i>Metrics with multiple-level categorical targets</a></li>
+<li class="chapter" data-level="" data-path="example-predicting-employee-retention.html"><a href="example-predicting-employee-retention.html"><i class="fa fa-check"></i>Example: Predicting employee retention</a></li>
+<li class="chapter" data-level="" data-path="node-descriptions-for-the-figure-7.16-workflow.html"><a href="node-descriptions-for-the-figure-7.16-workflow.html"><i class="fa fa-check"></i>Node descriptions for the Figure 7.16 workflow</a></li>
+<li class="chapter" data-level="" data-path="node-descriptions-for-the-figure-7.18-workflow.html"><a href="node-descriptions-for-the-figure-7.18-workflow.html"><i class="fa fa-check"></i>Node descriptions for the Figure 7.18 workflow</a></li>
+<li class="chapter" data-level="" data-path="predictor-interpretation-and-importance.html"><a href="predictor-interpretation-and-importance.html"><i class="fa fa-check"></i>Predictor interpretation and importance</a></li>
+<li class="chapter" data-level="" data-path="example-predicting-heart-disease.html"><a href="example-predicting-heart-disease.html"><i class="fa fa-check"></i>Example: predicting heart disease</a></li>
+<li class="chapter" data-level="" data-path="node-descriptions-for-the-figure-7.20-workflow.html"><a href="node-descriptions-for-the-figure-7.20-workflow.html"><i class="fa fa-check"></i>Node descriptions for the Figure 7.20 workflow</a></li>
+<li class="chapter" data-level="" data-path="regularized-logistic-regression.html"><a href="regularized-logistic-regression.html"><i class="fa fa-check"></i>Regularized logistic regression</a></li>
+<li class="chapter" data-level="" data-path="asymmetric-benefits-and-costs.html"><a href="asymmetric-benefits-and-costs.html"><i class="fa fa-check"></i>Asymmetric benefits and costs</a></li>
+<li class="chapter" data-level="" data-path="node-descriptions-for-the-figure-7.21-workflow.html"><a href="node-descriptions-for-the-figure-7.21-workflow.html"><i class="fa fa-check"></i>Node descriptions for the Figure 7.21 workflow</a></li>
+<li class="chapter" data-level="" data-path="multinomial-logistic-regression.html"><a href="multinomial-logistic-regression.html"><i class="fa fa-check"></i>Multinomial logistic regression</a></li>
+<li class="chapter" data-level="" data-path="summary-4.html"><a href="summary-4.html"><i class="fa fa-check"></i>Summary</a></li>
+<li class="chapter" data-level="" data-path="appendix-cohens-kappa.html"><a href="appendix-cohens-kappa.html"><i class="fa fa-check"></i>Appendix: Cohen’s Kappa</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="classification-and-regression-trees.html"><a href="classification-and-regression-trees.html"><i class="fa fa-check"></i><b>8</b> Classification and regression trees</a>
+<ul>
+<li class="chapter" data-level="" data-path="classification-trees.html"><a href="classification-trees.html"><i class="fa fa-check"></i>Classification trees</a></li>
+<li class="chapter" data-level="" data-path="applications-of-decision-trees.html"><a href="applications-of-decision-trees.html"><i class="fa fa-check"></i>Applications of decision trees</a></li>
+<li class="chapter" data-level="" data-path="developing-classification-trees.html"><a href="developing-classification-trees.html"><i class="fa fa-check"></i>Developing classification trees</a></li>
+<li class="chapter" data-level="" data-path="varieties-of-classification-tree-algorithms.html"><a href="varieties-of-classification-tree-algorithms.html"><i class="fa fa-check"></i>Varieties of classification tree algorithms</a></li>
+<li class="chapter" data-level="" data-path="growing-decision-trees-gini-impurity-and-entropy.html"><a href="growing-decision-trees-gini-impurity-and-entropy.html"><i class="fa fa-check"></i>Growing decision trees: Gini impurity and entropy</a>
+<ul>
+<li class="chapter" data-level="" data-path="growing-decision-trees-gini-impurity-and-entropy.html"><a href="growing-decision-trees-gini-impurity-and-entropy.html#gini-impurity"><i class="fa fa-check"></i>Gini impurity</a></li>
+<li class="chapter" data-level="" data-path="growing-decision-trees-gini-impurity-and-entropy.html"><a href="growing-decision-trees-gini-impurity-and-entropy.html#entropy"><i class="fa fa-check"></i>Entropy</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="example-of-splitting-using-gini-impurity-and-entropy.html"><a href="example-of-splitting-using-gini-impurity-and-entropy.html"><i class="fa fa-check"></i>Example of splitting using Gini impurity and entropy</a></li>
+<li class="chapter" data-level="" data-path="pruning-to-avoid-overfitting.html"><a href="pruning-to-avoid-overfitting.html"><i class="fa fa-check"></i>Pruning to avoid overfitting</a></li>
+<li class="chapter" data-level="" data-path="pre-pruning.html"><a href="pre-pruning.html"><i class="fa fa-check"></i>Pre-pruning</a></li>
+<li class="chapter" data-level="" data-path="post-pruning.html"><a href="post-pruning.html"><i class="fa fa-check"></i>Post-pruning</a></li>
+<li class="chapter" data-level="" data-path="reduced-error-pruning.html"><a href="reduced-error-pruning.html"><i class="fa fa-check"></i>Reduced error pruning</a></li>
+<li class="chapter" data-level="" data-path="cost-complexity-pruning.html"><a href="cost-complexity-pruning.html"><i class="fa fa-check"></i>Cost-complexity pruning</a></li>
+<li class="chapter" data-level="" data-path="pruning-using-the-minimum-description-length-principle.html"><a href="pruning-using-the-minimum-description-length-principle.html"><i class="fa fa-check"></i>Pruning using the Minimum Description Length principle</a></li>
+<li class="chapter" data-level="" data-path="recommendations-on-pruning.html"><a href="recommendations-on-pruning.html"><i class="fa fa-check"></i>Recommendations on pruning</a></li>
+<li class="chapter" data-level="" data-path="missing-values-1.html"><a href="missing-values-1.html"><i class="fa fa-check"></i>Missing values</a>
+<ul>
+<li class="chapter" data-level="" data-path="missing-values-1.html"><a href="missing-values-1.html#ignoring-missing-data"><i class="fa fa-check"></i>Ignoring missing data</a></li>
+<li class="chapter" data-level="" data-path="missing-values-1.html"><a href="missing-values-1.html#imputation-techniques"><i class="fa fa-check"></i>Imputation techniques</a></li>
+<li class="chapter" data-level="" data-path="missing-values-1.html"><a href="missing-values-1.html#using-machine-learning"><i class="fa fa-check"></i>Using machine learning</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="outliers-1.html"><a href="outliers-1.html"><i class="fa fa-check"></i>Outliers</a></li>
+<li class="chapter" data-level="" data-path="example-of-developing-a-classification-tree.html"><a href="example-of-developing-a-classification-tree.html"><i class="fa fa-check"></i>Example of developing a classification tree</a></li>
+<li class="chapter" data-level="" data-path="node-descriptions-for-the-figure-8.14-workflow.html"><a href="node-descriptions-for-the-figure-8.14-workflow.html"><i class="fa fa-check"></i>Node descriptions for the Figure 8.14 workflow</a>
+<ul>
+<li class="chapter" data-level="" data-path="node-descriptions-for-the-figure-8.14-workflow.html"><a href="node-descriptions-for-the-figure-8.14-workflow.html#performance-with-missing-values"><i class="fa fa-check"></i>Performance with missing values</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="regression-trees.html"><a href="regression-trees.html"><i class="fa fa-check"></i>Regression trees</a></li>
+<li class="chapter" data-level="" data-path="example-predicting-home-selling-prices-using-regression-trees.html"><a href="example-predicting-home-selling-prices-using-regression-trees.html"><i class="fa fa-check"></i>Example predicting home selling prices using regression trees</a></li>
+<li class="chapter" data-level="" data-path="node-descriptions-for-the-figure-8.16-workflow.html"><a href="node-descriptions-for-the-figure-8.16-workflow.html"><i class="fa fa-check"></i>Node descriptions for the Figure 8.16 workflow</a></li>
+<li class="chapter" data-level="" data-path="regression-tree-results.html"><a href="regression-tree-results.html"><i class="fa fa-check"></i>Regression tree results</a></li>
+<li class="chapter" data-level="" data-path="strengths-and-weaknesses-of-decision-trees.html"><a href="strengths-and-weaknesses-of-decision-trees.html"><i class="fa fa-check"></i>Strengths and weaknesses of decision trees</a></li>
+<li class="chapter" data-level="" data-path="summary-5.html"><a href="summary-5.html"><i class="fa fa-check"></i>Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="naïve-bayes.html"><a href="naïve-bayes.html"><i class="fa fa-check"></i><b>9</b> Naïve Bayes</a>
+<ul>
+<li class="chapter" data-level="" data-path="naïve-bayes.html"><a href="naïve-bayes.html#a-thought-problem"><i class="fa fa-check"></i>A thought problem</a></li>
+<li class="chapter" data-level="" data-path="analyis-of-the-thought-problem.html"><a href="analyis-of-the-thought-problem.html"><i class="fa fa-check"></i>Analyis of the thought problem</a></li>
+<li class="chapter" data-level="" data-path="a-surprising-result.html"><a href="a-surprising-result.html"><i class="fa fa-check"></i>A surprising result</a></li>
+<li class="chapter" data-level="" data-path="bayes-theorem-illustrated.html"><a href="bayes-theorem-illustrated.html"><i class="fa fa-check"></i>Bayes theorem illustrated</a></li>
+<li class="chapter" data-level="" data-path="updating-the-probabilities.html"><a href="updating-the-probabilities.html"><i class="fa fa-check"></i>Updating the probabilities</a></li>
+<li class="chapter" data-level="" data-path="what-happens-with-more-predictors.html"><a href="what-happens-with-more-predictors.html"><i class="fa fa-check"></i>What happens with more predictors?</a></li>
+<li class="chapter" data-level="" data-path="illustration-of-naïve-bayes-with-a-toy-data-set.html"><a href="illustration-of-naïve-bayes-with-a-toy-data-set.html"><i class="fa fa-check"></i>Illustration of Naïve Bayes with a "toy" data set</a></li>
+<li class="chapter" data-level="" data-path="calculations-needed-for-bayes-model.html"><a href="calculations-needed-for-bayes-model.html"><i class="fa fa-check"></i>Calculations needed for Bayes model</a>
+<ul>
+<li class="chapter" data-level="" data-path="calculations-needed-for-bayes-model.html"><a href="calculations-needed-for-bayes-model.html#results-of-probability-calculations"><i class="fa fa-check"></i>Results of probability calculations</a></li>
+<li class="chapter" data-level="" data-path="calculations-needed-for-bayes-model.html"><a href="calculations-needed-for-bayes-model.html#the-assumption-of-conditional-independence"><i class="fa fa-check"></i>The assumption of conditional independence</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="naïve-bayes-with-continuous-predictors.html"><a href="naïve-bayes-with-continuous-predictors.html"><i class="fa fa-check"></i>Naïve Bayes with continuous predictors</a></li>
+<li class="chapter" data-level="" data-path="laplace-smoothing.html"><a href="laplace-smoothing.html"><i class="fa fa-check"></i>Laplace smoothing</a></li>
+<li class="chapter" data-level="" data-path="examples-using-naïve-bayes.html"><a href="examples-using-naïve-bayes.html"><i class="fa fa-check"></i>Examples using naïve Bayes</a>
+<ul>
+<li class="chapter" data-level="" data-path="examples-using-naïve-bayes.html"><a href="examples-using-naïve-bayes.html#heart-data-example"><i class="fa fa-check"></i>Heart data example</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="node-descriptions-for-figure-9.5-workflow.html"><a href="node-descriptions-for-figure-9.5-workflow.html"><i class="fa fa-check"></i>Node descriptions for Figure 9.5 workflow</a></li>
+<li class="chapter" data-level="9.1" data-path="results-for-heart-data-predicitons---.html"><a href="results-for-heart-data-predicitons---.html"><i class="fa fa-check"></i><b>9.1</b> Results for heart data predicitons [(-)]-</a></li>
+<li class="chapter" data-level="" data-path="spam-detection.html"><a href="spam-detection.html"><i class="fa fa-check"></i>Spam detection</a></li>
+<li class="chapter" data-level="" data-path="node-descriptions-for-figure-9.6-workflow.html"><a href="node-descriptions-for-figure-9.6-workflow.html"><i class="fa fa-check"></i>Node descriptions for Figure 9.6 workflow</a></li>
+<li class="chapter" data-level="" data-path="accuracy-of-spamham-detection.html"><a href="accuracy-of-spamham-detection.html"><i class="fa fa-check"></i>Accuracy of SPAM/HAM detection</a></li>
+<li class="chapter" data-level="" data-path="summary-and-comments-on-naïve-bayes.html"><a href="summary-and-comments-on-naïve-bayes.html"><i class="fa fa-check"></i>Summary and comments on naïve Bayes</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html"><i class="fa fa-check"></i><b>10</b> k nearest neighbors</a>
+<ul>
+<li class="chapter" data-level="" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html#a-very-simple-model"><i class="fa fa-check"></i>A very simple model</a></li>
+<li class="chapter" data-level="" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html#typical-applications-of-knn"><i class="fa fa-check"></i>Typical applications of kNN</a></li>
+<li class="chapter" data-level="" data-path="k-nearest-neighbors.html"><a href="k-nearest-neighbors.html#lazy-vs.-eager-learners"><i class="fa fa-check"></i>Lazy vs. eager learners</a></li>
+<li class="chapter" data-level="" data-path="how-knn-works.html"><a href="how-knn-works.html"><i class="fa fa-check"></i>How kNN works</a></li>
+<li class="chapter" data-level="" data-path="a-two-dimensional-graphic-example-of-knn.html"><a href="a-two-dimensional-graphic-example-of-knn.html"><i class="fa fa-check"></i>A two-dimensional graphic example of kNN</a></li>
+<li class="chapter" data-level="" data-path="example-of-knn-diagnosing-heart-disease.html"><a href="example-of-knn-diagnosing-heart-disease.html"><i class="fa fa-check"></i>Example of kNN: Diagnosing heart disease</a></li>
+<li class="chapter" data-level="" data-path="node-desciptions-for-figure-10.2-workflow.html"><a href="node-desciptions-for-figure-10.2-workflow.html"><i class="fa fa-check"></i>Node desciptions for Figure 10.2 workflow</a></li>
+<li class="chapter" data-level="" data-path="results-from-the-figure-10.2-analysis.html"><a href="results-from-the-figure-10.2-analysis.html"><i class="fa fa-check"></i>Results from the Figure 10.2 analysis</a></li>
+<li class="chapter" data-level="" data-path="knn-for-continuous-targets.html"><a href="knn-for-continuous-targets.html"><i class="fa fa-check"></i>kNN for continuous targets</a></li>
+<li class="chapter" data-level="" data-path="node-desciptions-for-the-the-figure-10.5-workflow.html"><a href="node-desciptions-for-the-the-figure-10.5-workflow.html"><i class="fa fa-check"></i>Node desciptions for the the Figure 10.5 workflow</a></li>
+<li class="chapter" data-level="" data-path="results-for-comparing-ols-and-knn-on-non-linear-relationship.html"><a href="results-for-comparing-ols-and-knn-on-non-linear-relationship.html"><i class="fa fa-check"></i>Results for comparing OLS and kNN on non-linear relationship</a></li>
+<li class="chapter" data-level="" data-path="knn-for-multiclass-target-variables.html"><a href="knn-for-multiclass-target-variables.html"><i class="fa fa-check"></i>kNN for multiclass target variables</a>
+<ul>
+<li class="chapter" data-level="" data-path="knn-for-multiclass-target-variables.html"><a href="knn-for-multiclass-target-variables.html#frequency-analysis-for-the-glass-dataset."><i class="fa fa-check"></i>Frequency analysis for the glass dataset.</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="node-desciptions-for-the-the-figure-10.8-workflow.html"><a href="node-desciptions-for-the-the-figure-10.8-workflow.html"><i class="fa fa-check"></i>Node desciptions for the the Figure 10.8 workflow</a></li>
+<li class="chapter" data-level="" data-path="frequency-table-for-glass-data-set.html"><a href="frequency-table-for-glass-data-set.html"><i class="fa fa-check"></i>Frequency table for glass data set</a></li>
+<li class="chapter" data-level="" data-path="node-desciptions-for-figure-10.9-workflow.html"><a href="node-desciptions-for-figure-10.9-workflow.html"><i class="fa fa-check"></i>Node desciptions for Figure 10.9 workflow</a></li>
+<li class="chapter" data-level="" data-path="results-from-the-figure-10.9-workflow.html"><a href="results-from-the-figure-10.9-workflow.html"><i class="fa fa-check"></i>Results from the Figure 10.9 workflow</a></li>
+<li class="chapter" data-level="" data-path="summary-6.html"><a href="summary-6.html"><i class="fa fa-check"></i>Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="neural-networks.html"><a href="neural-networks.html"><i class="fa fa-check"></i><b>11</b> Neural networks</a>
+<ul>
+<li class="chapter" data-level="" data-path="what-are-artificial-neural-networks.html"><a href="what-are-artificial-neural-networks.html"><i class="fa fa-check"></i>What are artificial neural networks?</a>
+<ul>
+<li class="chapter" data-level="" data-path="what-are-artificial-neural-networks.html"><a href="what-are-artificial-neural-networks.html#human-neurons"><i class="fa fa-check"></i>Human neurons</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="mathematical-model-of-a-neuron.html"><a href="mathematical-model-of-a-neuron.html"><i class="fa fa-check"></i>Mathematical model of a neuron</a></li>
+<li class="chapter" data-level="" data-path="the-disillusionment.html"><a href="the-disillusionment.html"><i class="fa fa-check"></i>The disillusionment</a></li>
+<li class="chapter" data-level="" data-path="the-learning-process-for-artificial-neural-networks.html"><a href="the-learning-process-for-artificial-neural-networks.html"><i class="fa fa-check"></i>The learning process for artificial neural networks</a></li>
+<li class="chapter" data-level="" data-path="backpropagation-reignites-interest.html"><a href="backpropagation-reignites-interest.html"><i class="fa fa-check"></i>Backpropagation reignites interest</a></li>
+<li class="chapter" data-level="" data-path="activation-functions.html"><a href="activation-functions.html"><i class="fa fa-check"></i>Activation functions</a></li>
+<li class="chapter" data-level="" data-path="example-of-a-single-layer-artificial-neuron.html"><a href="example-of-a-single-layer-artificial-neuron.html"><i class="fa fa-check"></i>Example of a single-layer artificial neuron</a></li>
+<li class="chapter" data-level="" data-path="example-of-a-multilayer-perceptron.html"><a href="example-of-a-multilayer-perceptron.html"><i class="fa fa-check"></i>Example of a multilayer perceptron</a></li>
+<li class="chapter" data-level="" data-path="example-of-a-multilayer-perceptron-with-multi-level-categorical-target.html"><a href="example-of-a-multilayer-perceptron-with-multi-level-categorical-target.html"><i class="fa fa-check"></i>Example of a multilayer perceptron with multi-level categorical target</a></li>
+<li class="chapter" data-level="" data-path="node-desciptions-for-the-figure-11.5-workflow.html"><a href="node-desciptions-for-the-figure-11.5-workflow.html"><i class="fa fa-check"></i>Node desciptions for the Figure 11.5 workflow</a></li>
+<li class="chapter" data-level="" data-path="results-of-the-analysis-with-the-iris-data.html"><a href="results-of-the-analysis-with-the-iris-data.html"><i class="fa fa-check"></i>Results of the analysis with the iris data</a></li>
+<li class="chapter" data-level="" data-path="considerations-in-using-neural-nets.html"><a href="considerations-in-using-neural-nets.html"><i class="fa fa-check"></i>Considerations in using neural nets</a>
+<ul>
+<li class="chapter" data-level="" data-path="considerations-in-using-neural-nets.html"><a href="considerations-in-using-neural-nets.html#missing-data"><i class="fa fa-check"></i>Missing data</a></li>
+<li class="chapter" data-level="" data-path="considerations-in-using-neural-nets.html"><a href="considerations-in-using-neural-nets.html#representative-data-all-eventualities-must-be-covered"><i class="fa fa-check"></i>Representative data: All eventualities must be covered</a></li>
+<li class="chapter" data-level="" data-path="considerations-in-using-neural-nets.html"><a href="considerations-in-using-neural-nets.html#unbalanced-data-sets"><i class="fa fa-check"></i>Unbalanced data sets</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="the-overfitting-problem.html"><a href="the-overfitting-problem.html"><i class="fa fa-check"></i>The overfitting problem</a></li>
+<li class="chapter" data-level="" data-path="the-results-of-overfitting.html"><a href="the-results-of-overfitting.html"><i class="fa fa-check"></i>The results of overfitting</a></li>
+<li class="chapter" data-level="" data-path="normalizing-the-data.html"><a href="normalizing-the-data.html"><i class="fa fa-check"></i>Normalizing the data</a></li>
+<li class="chapter" data-level="" data-path="example-using-neural-nets-to-predict-credit-status.html"><a href="example-using-neural-nets-to-predict-credit-status.html"><i class="fa fa-check"></i>Example: Using neural nets to predict credit status</a></li>
+<li class="chapter" data-level="" data-path="overview-of-the-analytic-process.html"><a href="overview-of-the-analytic-process.html"><i class="fa fa-check"></i>Overview of the analytic process</a></li>
+<li class="chapter" data-level="" data-path="the-workflow-for-the-credit-data-neural-network.html"><a href="the-workflow-for-the-credit-data-neural-network.html"><i class="fa fa-check"></i>The workflow for the credit data neural network</a></li>
+<li class="chapter" data-level="" data-path="node-desciptions-for-the-figure-11.6-workflow.html"><a href="node-desciptions-for-the-figure-11.6-workflow.html"><i class="fa fa-check"></i>Node desciptions for the Figure 11.6 workflow</a></li>
+<li class="chapter" data-level="" data-path="example-neural-nets-applied-to-toyota-corolla-data-set.html"><a href="example-neural-nets-applied-to-toyota-corolla-data-set.html"><i class="fa fa-check"></i>Example: Neural nets applied to Toyota Corolla data set</a>
+<ul>
+<li class="chapter" data-level="" data-path="example-neural-nets-applied-to-toyota-corolla-data-set.html"><a href="example-neural-nets-applied-to-toyota-corolla-data-set.html#results-for-toyota-corolla-analysis-with-neural-nets"><i class="fa fa-check"></i>Results for Toyota Corolla analysis with neural nets</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="node-desciptions-for-the-figure-11.5-workflow-1.html"><a href="node-desciptions-for-the-figure-11.5-workflow-1.html"><i class="fa fa-check"></i>Node desciptions for the Figure 11.5 workflow</a></li>
+<li class="chapter" data-level="" data-path="summary-7.html"><a href="summary-7.html"><i class="fa fa-check"></i>Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="ensemble-models.html"><a href="ensemble-models.html"><i class="fa fa-check"></i><b>12</b> Ensemble models</a>
+<ul>
+<li class="chapter" data-level="" data-path="ensemble-models.html"><a href="ensemble-models.html#the-wisdom-of-ensemble-models"><i class="fa fa-check"></i>The wisdom of ensemble models</a></li>
+<li class="chapter" data-level="" data-path="creating-ensemble-models.html"><a href="creating-ensemble-models.html"><i class="fa fa-check"></i>Creating ensemble models</a></li>
+<li class="chapter" data-level="" data-path="better-predictions-with-ensemble-models.html"><a href="better-predictions-with-ensemble-models.html"><i class="fa fa-check"></i>Better predictions with ensemble models</a>
+<ul>
+<li class="chapter" data-level="" data-path="better-predictions-with-ensemble-models.html"><a href="better-predictions-with-ensemble-models.html#reduced-variation"><i class="fa fa-check"></i>Reduced variation</a></li>
+<li class="chapter" data-level="" data-path="better-predictions-with-ensemble-models.html"><a href="better-predictions-with-ensemble-models.html#improved-performance"><i class="fa fa-check"></i>Improved performance</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="ensemble-models-based-on-decision-trees.html"><a href="ensemble-models-based-on-decision-trees.html"><i class="fa fa-check"></i>Ensemble models based on decision trees</a>
+<ul>
+<li class="chapter" data-level="" data-path="ensemble-models-based-on-decision-trees.html"><a href="ensemble-models-based-on-decision-trees.html#parallel-and-sequential-learners"><i class="fa fa-check"></i>Parallel and sequential learners</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="parallel-learning-models-bagging.html"><a href="parallel-learning-models-bagging.html"><i class="fa fa-check"></i>Parallel learning models: Bagging</a>
+<ul>
+<li class="chapter" data-level="" data-path="parallel-learning-models-bagging.html"><a href="parallel-learning-models-bagging.html#parallel-learning-models-random-forests"><i class="fa fa-check"></i>Parallel learning models: Random forests</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="sequential-learning-models-adaboost.html"><a href="sequential-learning-models-adaboost.html"><i class="fa fa-check"></i>Sequential learning models: AdaBoost</a>
+<ul>
+<li class="chapter" data-level="" data-path="sequential-learning-models-adaboost.html"><a href="sequential-learning-models-adaboost.html#sequential-learning-models-gradient-boosting-machines"><i class="fa fa-check"></i>Sequential learning models: Gradient Boosting Machines</a></li>
+<li class="chapter" data-level="" data-path="sequential-learning-models-adaboost.html"><a href="sequential-learning-models-adaboost.html#sequential-learning-models-xgboost"><i class="fa fa-check"></i>Sequential learning models: XGBoost</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="example-of-ensemble-modeling-for-a-continuous-target.html"><a href="example-of-ensemble-modeling-for-a-continuous-target.html"><i class="fa fa-check"></i>Example of ensemble modeling for a continuous target</a></li>
+<li class="chapter" data-level="" data-path="node-desciptions-for-the-figure-12.4-workflow.html"><a href="node-desciptions-for-the-figure-12.4-workflow.html"><i class="fa fa-check"></i>Node desciptions for the Figure 12.4 workflow</a></li>
+<li class="chapter" data-level="" data-path="example-of-ensemble-modeling-for-a-binary-target.html"><a href="example-of-ensemble-modeling-for-a-binary-target.html"><i class="fa fa-check"></i>Example of ensemble modeling for a binary target</a>
+<ul>
+<li class="chapter" data-level="" data-path="example-of-ensemble-modeling-for-a-binary-target.html"><a href="example-of-ensemble-modeling-for-a-binary-target.html#situation"><i class="fa fa-check"></i>Situation</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="data-description.html"><a href="data-description.html"><i class="fa fa-check"></i>Data description</a></li>
+<li class="chapter" data-level="" data-path="analysis.html"><a href="analysis.html"><i class="fa fa-check"></i>Analysis</a></li>
+<li class="chapter" data-level="" data-path="node-desciptions-for-the-figure-12.5-workflow.html"><a href="node-desciptions-for-the-figure-12.5-workflow.html"><i class="fa fa-check"></i>Node desciptions for the Figure 12.5 workflow</a></li>
+<li class="chapter" data-level="" data-path="results-of-the-kicked-cars-analysis.html"><a href="results-of-the-kicked-cars-analysis.html"><i class="fa fa-check"></i>Results of the kicked cars analysis</a></li>
+<li class="chapter" data-level="" data-path="cost-of-errors.html"><a href="cost-of-errors.html"><i class="fa fa-check"></i>Cost of errors</a></li>
+<li class="chapter" data-level="" data-path="node-desciptions-for-the-figure-12.6-workflow.html"><a href="node-desciptions-for-the-figure-12.6-workflow.html"><i class="fa fa-check"></i>Node desciptions for the Figure 12.6 workflow</a></li>
+<li class="chapter" data-level="" data-path="summary-8.html"><a href="summary-8.html"><i class="fa fa-check"></i>Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="cluster-analysis.html"><a href="cluster-analysis.html"><i class="fa fa-check"></i><b>13</b> Cluster analysis</a>
+<ul>
+<li class="chapter" data-level="" data-path="how-many-clusters.html"><a href="how-many-clusters.html"><i class="fa fa-check"></i>How many clusters?</a></li>
+<li class="chapter" data-level="" data-path="recommended-steps-in-running-a-cluster-analysis.html"><a href="recommended-steps-in-running-a-cluster-analysis.html"><i class="fa fa-check"></i>Recommended steps in running a cluster analysis</a>
+<ul>
+<li class="chapter" data-level="" data-path="recommended-steps-in-running-a-cluster-analysis.html"><a href="recommended-steps-in-running-a-cluster-analysis.html#clearly-state-the-objective-of-the-analysis"><i class="fa fa-check"></i>Clearly state the objective of the analysis</a></li>
+<li class="chapter" data-level="" data-path="recommended-steps-in-running-a-cluster-analysis.html"><a href="recommended-steps-in-running-a-cluster-analysis.html#select-the-variables-to-describe-the-objects-to-be-clustered"><i class="fa fa-check"></i>Select the variables to describe the objects to be clustered</a></li>
+<li class="chapter" data-level="" data-path="recommended-steps-in-running-a-cluster-analysis.html"><a href="recommended-steps-in-running-a-cluster-analysis.html#check-that-the-data-set-contains-clusters"><i class="fa fa-check"></i>Check that the data set contains clusters</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="select-a-measure-of-similarity-or-distance.html"><a href="select-a-measure-of-similarity-or-distance.html"><i class="fa fa-check"></i>Select a measure of similarity or distance</a></li>
+<li class="chapter" data-level="" data-path="euclidean-distance-for-quantitative-features.html"><a href="euclidean-distance-for-quantitative-features.html"><i class="fa fa-check"></i>Euclidean distance for quantitative features</a>
+<ul>
+<li class="chapter" data-level="" data-path="euclidean-distance-for-quantitative-features.html"><a href="euclidean-distance-for-quantitative-features.html#manhattan-distance"><i class="fa fa-check"></i>Manhattan distance</a></li>
+<li class="chapter" data-level="" data-path="euclidean-distance-for-quantitative-features.html"><a href="euclidean-distance-for-quantitative-features.html#cosine-similarity"><i class="fa fa-check"></i>Cosine similarity</a></li>
+<li class="chapter" data-level="" data-path="euclidean-distance-for-quantitative-features.html"><a href="euclidean-distance-for-quantitative-features.html#converting-cosine-similarity-to-distance"><i class="fa fa-check"></i>Converting cosine similarity to distance</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="select-a-clustering-method.html"><a href="select-a-clustering-method.html"><i class="fa fa-check"></i>Select a clustering method</a></li>
+<li class="chapter" data-level="" data-path="hierarchical-clustering-example.html"><a href="hierarchical-clustering-example.html"><i class="fa fa-check"></i>Hierarchical clustering example</a></li>
+<li class="chapter" data-level="" data-path="node-desciptions-for-figure-13.11-workflow.html"><a href="node-desciptions-for-figure-13.11-workflow.html"><i class="fa fa-check"></i>Node desciptions for Figure 13.11 workflow</a></li>
+<li class="chapter" data-level="" data-path="results-of-clustering-automobile-brands.html"><a href="results-of-clustering-automobile-brands.html"><i class="fa fa-check"></i>Results of clustering automobile brands</a>
+<ul>
+<li class="chapter" data-level="" data-path="results-of-clustering-automobile-brands.html"><a href="results-of-clustering-automobile-brands.html#summary-comments-on-hierarchical-clustering"><i class="fa fa-check"></i>Summary comments on hierarchical clustering</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="k-means-clustering.html"><a href="k-means-clustering.html"><i class="fa fa-check"></i>k-means clustering</a>
+<ul>
+<li class="chapter" data-level="" data-path="k-means-clustering.html"><a href="k-means-clustering.html#determining-the-number-of-clusters-with-k-means"><i class="fa fa-check"></i>Determining the number of clusters with k-means</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="example-of-k-means-clustering.html"><a href="example-of-k-means-clustering.html"><i class="fa fa-check"></i>Example of k-means clustering</a></li>
+<li class="chapter" data-level="" data-path="node-desciptions-for-figure-13.13-workflow.html"><a href="node-desciptions-for-figure-13.13-workflow.html"><i class="fa fa-check"></i>Node desciptions for Figure 13.13 workflow</a></li>
+<li class="chapter" data-level="" data-path="results-for-determining-the-number-of-clusters.html"><a href="results-for-determining-the-number-of-clusters.html"><i class="fa fa-check"></i>Results for determining the number of clusters</a></li>
+<li class="chapter" data-level="" data-path="node-desciptions-for-figure-13.16-workflow.html"><a href="node-desciptions-for-figure-13.16-workflow.html"><i class="fa fa-check"></i>Node desciptions for Figure 13.16 workflow</a>
+<ul>
+<li class="chapter" data-level="" data-path="node-desciptions-for-figure-13.16-workflow.html"><a href="node-desciptions-for-figure-13.16-workflow.html#summary-comments-on-k-means"><i class="fa fa-check"></i>Summary comments on k-means</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="density-based-clustering.html"><a href="density-based-clustering.html"><i class="fa fa-check"></i>Density-based clustering</a>
+<ul>
+<li class="chapter" data-level="" data-path="density-based-clustering.html"><a href="density-based-clustering.html#example-application-of-dbscan"><i class="fa fa-check"></i>Example application of DBSCAN</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="node-desciptions-for-figure-13.20-workflow.html"><a href="node-desciptions-for-figure-13.20-workflow.html"><i class="fa fa-check"></i>Node desciptions for Figure 13.20 workflow</a>
+<ul>
+<li class="chapter" data-level="" data-path="node-desciptions-for-figure-13.20-workflow.html"><a href="node-desciptions-for-figure-13.20-workflow.html#fuzzy-cluster-analysis"><i class="fa fa-check"></i>Fuzzy cluster analysis</a></li>
+<li class="chapter" data-level="" data-path="node-desciptions-for-figure-13.20-workflow.html"><a href="node-desciptions-for-figure-13.20-workflow.html#example-of-fuzzy-clustering"><i class="fa fa-check"></i>Example of fuzzy clustering</a></li>
+<li class="chapter" data-level="" data-path="node-desciptions-for-figure-13.20-workflow.html"><a href="node-desciptions-for-figure-13.20-workflow.html#node-desciptions-for-figure-13.26-workflow"><i class="fa fa-check"></i>Node desciptions for Figure 13.26 workflow</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="cluster-validation.html"><a href="cluster-validation.html"><i class="fa fa-check"></i>Cluster validation</a>
+<ul>
+<li class="chapter" data-level="" data-path="cluster-validation.html"><a href="cluster-validation.html#internal-cluster-validation"><i class="fa fa-check"></i>Internal cluster validation</a></li>
+<li class="chapter" data-level="" data-path="cluster-validation.html"><a href="cluster-validation.html#external-cluster-validation"><i class="fa fa-check"></i>External cluster validation</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="communication-and-deployment.html"><a href="communication-and-deployment.html"><i class="fa fa-check"></i><b>14</b> Communication and deployment</a>
+<ul>
+<li class="chapter" data-level="" data-path="communicating-the-final-report-and-presentation.html"><a href="communicating-the-final-report-and-presentation.html"><i class="fa fa-check"></i>Communicating the final report and presentation</a>
+<ul>
+<li class="chapter" data-level="" data-path="communicating-the-final-report-and-presentation.html"><a href="communicating-the-final-report-and-presentation.html#content-for-technical-versus-non-technical-audiences"><i class="fa fa-check"></i>Content for technical versus non-technical audiences</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="style-and-order-of-presentation-contents.html"><a href="style-and-order-of-presentation-contents.html"><i class="fa fa-check"></i>Style and order of presentation contents</a></li>
+<li class="chapter" data-level="" data-path="data-visualization.html"><a href="data-visualization.html"><i class="fa fa-check"></i>Data visualization</a></li>
+<li class="chapter" data-level="" data-path="encoding-the-data-into-graphical-form.html"><a href="encoding-the-data-into-graphical-form.html"><i class="fa fa-check"></i>Encoding the data into graphical form</a>
+<ul>
+<li class="chapter" data-level="" data-path="encoding-the-data-into-graphical-form.html"><a href="encoding-the-data-into-graphical-form.html#constructing-the-graphical-image"><i class="fa fa-check"></i>Constructing the graphical image</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="chart-suggestions---a-thought-starter.html"><a href="chart-suggestions---a-thought-starter.html"><i class="fa fa-check"></i>Chart Suggestions - A Thought Starter</a></li>
+<li class="chapter" data-level="" data-path="deploying-predictive-models.html"><a href="deploying-predictive-models.html"><i class="fa fa-check"></i>Deploying predictive models</a></li>
+<li class="chapter" data-level="" data-path="deploying-predictive-models-for-use-by-the-developer-or-team.html"><a href="deploying-predictive-models-for-use-by-the-developer-or-team.html"><i class="fa fa-check"></i>Deploying predictive models for use by the developer or team</a>
+<ul>
+<li class="chapter" data-level="" data-path="deploying-predictive-models-for-use-by-the-developer-or-team.html"><a href="deploying-predictive-models-for-use-by-the-developer-or-team.html#deployment-using-knime"><i class="fa fa-check"></i>Deployment using KNIME</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="node-desciptions-for-figure-14.2-workflow.html"><a href="node-desciptions-for-figure-14.2-workflow.html"><i class="fa fa-check"></i>Node desciptions for Figure 14.2 workflow</a></li>
+<li class="chapter" data-level="" data-path="created-workflow.html"><a href="created-workflow.html"><i class="fa fa-check"></i>Created workflow</a></li>
+<li class="chapter" data-level="" data-path="deployment-using-excel.html"><a href="deployment-using-excel.html"><i class="fa fa-check"></i>Deployment using Excel</a></li>
+<li class="chapter" data-level="" data-path="selecting-and-preparing-data-for-explanatory-visualizations.html"><a href="selecting-and-preparing-data-for-explanatory-visualizations.html"><i class="fa fa-check"></i>Selecting and preparing data for explanatory visualizations</a></li>
+<li class="chapter" data-level="" data-path="excel-charts.html"><a href="excel-charts.html"><i class="fa fa-check"></i>Excel charts</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown">
+Copyright 2023 All Rights Reserved </a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Predictive analytics with KNIME</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="euclidean-distance-for-quantitative-features" class="section level2 unnumbered hasAnchor">
+<h2>Euclidean distance for quantitative features<a href="euclidean-distance-for-quantitative-features.html#euclidean-distance-for-quantitative-features" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The most common dissimilarity measure used in clustering is Euclidean
+distance. To compute Euclidean distance among objects measured on k
+attributes, you take the measure of each pair of objects (the o<sub>i</sub>’s
+from <a href="select-a-measure-of-similarity-or-distance.html#fig:Image134">13.4</a>) that you want to group or cluster and form the sum of
+squared differences. In certain situations, the analyst may want to
+weight some of the features more heavily than others in calculating
+Euclidean distance, and this can be done using the <em>a<sub>i</sub></em> weights as
+shown in equation 13.1.</p>
+<p><span class="math display">\[
+\begin{aligned}
+d(r_1,r_j) &amp;= \sqrt{\sum_{t=1}^p,a_i(r_1-r_j)^2} \\
+\small\text { Where } d\left(r_i, r_j\right) &amp;=\small\text { the distance between object } r_i and r_j, \\
+\small\text {p} &amp;= \small\text {number of attributes } \\
+\small\text {t} &amp;= \small\text {a value on an attribute, and } \\
+\small\text a_i &amp;= \small\text {a user-defined weight.}
+\end{aligned}
+\tag{13.1}
+\]</span></p>
+<p>Before using Euclidean distance in a cluster analysis, it is always
+necessary to consider the measurement scales used for the variables
+unless the analyst specifically desires that the large magnitude
+features are more critical in defining distance. Variables with large
+magnitudes will likely affect the distance measures more. For example,
+consider the three hypothetical customers applying for a bank loan shown
+in Table <a href="euclidean-distance-for-quantitative-features.html#tab:Table132">13.2</a>. Note that customers A and B are very close except on
+income, while customers B and C have the same income.</p>
+<div class="tabwid"><style>.cl-53f5c970{}.cl-53ea1aa8{font-family:'Arial';font-size:11pt;font-weight:bold;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-53ea1ab2{font-family:'Arial';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-53ee82be{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-53ee82c8{margin:0;text-align:center;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-53ee82c9{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:25pt;line-height: 1;background-color:transparent;}.cl-53ee9e48{width:2in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-53ee9e49{width:0.5in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-53ee9e52{width:0.5in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-53ee9e53{width:2in;background-color:transparent;vertical-align: middle;border-bottom: 0.5pt solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-53ee9e5c{width:0.5in;background-color:transparent;vertical-align: middle;border-bottom: 0.5pt solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-53ee9e5d{width:2in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0.5pt solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-53ee9e66{width:0.5in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0.5pt solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-53ee9e67{width:2in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-53ee9e68{width:0.5in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-53ee9e70{width:2in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-53ee9e71{width:0.5in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing='true' class='cl-53f5c970'>
+
+<caption style="display:table-caption;margin:0pt;text-align:center;border-bottom: 0.00pt solid transparent;border-top: 0.00pt solid transparent;border-left: 0.00pt solid transparent;border-right: 0.00pt solid transparent;padding-top:3pt;padding-bottom:3pt;padding-left:3pt;padding-right:3pt;line-height: 1;background-color:transparent;">
+<span id="tab:Table132">Table 13.2: </span><span>Hypothetical bank loan customers.</span>
+</caption>
+
+<thead><tr style="overflow-wrap:break-word;"><th class="cl-53ee9e48"><p class="cl-53ee82be"><span class="cl-53ea1aa8"></span></p></th><th  colspan="3"class="cl-53ee9e49"><p class="cl-53ee82c8"><span class="cl-53ea1aa8">Customers</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-53ee9e53"><p class="cl-53ee82be"><span class="cl-53ea1aa8">Features</span></p></td><td class="cl-53ee9e5c"><p class="cl-53ee82c9"><span class="cl-53ea1ab2">A</span></p></td><td class="cl-53ee9e5c"><p class="cl-53ee82c9"><span class="cl-53ea1ab2">B</span></p></td><td class="cl-53ee9e5c"><p class="cl-53ee82c9"><span class="cl-53ea1ab2">C</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-53ee9e5d"><p class="cl-53ee82be"><span class="cl-53ea1aa8">Age</span></p></td><td class="cl-53ee9e66"><p class="cl-53ee82c9"><span class="cl-53ea1ab2">28</span></p></td><td class="cl-53ee9e66"><p class="cl-53ee82c9"><span class="cl-53ea1ab2">55</span></p></td><td class="cl-53ee9e66"><p class="cl-53ee82c9"><span class="cl-53ea1ab2">28</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-53ee9e67"><p class="cl-53ee82be"><span class="cl-53ea1aa8">Years of education</span></p></td><td class="cl-53ee9e68"><p class="cl-53ee82c9"><span class="cl-53ea1ab2">12</span></p></td><td class="cl-53ee9e68"><p class="cl-53ee82c9"><span class="cl-53ea1ab2">18</span></p></td><td class="cl-53ee9e68"><p class="cl-53ee82c9"><span class="cl-53ea1ab2">16</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-53ee9e67"><p class="cl-53ee82be"><span class="cl-53ea1aa8">Credit rating</span></p></td><td class="cl-53ee9e68"><p class="cl-53ee82c9"><span class="cl-53ea1ab2">680</span></p></td><td class="cl-53ee9e68"><p class="cl-53ee82c9"><span class="cl-53ea1ab2">750</span></p></td><td class="cl-53ee9e68"><p class="cl-53ee82c9"><span class="cl-53ea1ab2">690</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-53ee9e70"><p class="cl-53ee82be"><span class="cl-53ea1aa8">Annual income</span></p></td><td class="cl-53ee9e71"><p class="cl-53ee82c9"><span class="cl-53ea1ab2">35,000</span></p></td><td class="cl-53ee9e71"><p class="cl-53ee82c9"><span class="cl-53ea1ab2">45,000</span></p></td><td class="cl-53ee9e71"><p class="cl-53ee82c9"><span class="cl-53ea1ab2">45,000</span></p></td></tr></tbody></table></div>
+<p>Euclidean distances among customers A, B, and C are shown in Table <a href="euclidean-distance-for-quantitative-features.html#tab:Table133">13.3</a>.
+The distances indicate that customers B and C are by far the most
+similar. The distances are almost totally dependent on income.</p>
+<div class="tabwid"><style>.cl-5419c24e{}.cl-540e1548{font-family:'Arial';font-size:11pt;font-weight:bold;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-540e1552{font-family:'Arial';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-5412aba8{margin:0;text-align:center;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-5412abbc{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-5412abbd{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:25pt;line-height: 1;background-color:transparent;}.cl-5412c82c{width:0.5in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-5412c836{width:0.5in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-5412c837{width:0.5in;background-color:transparent;vertical-align: middle;border-bottom: 0.5pt solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-5412c840{width:0.5in;background-color:transparent;vertical-align: middle;border-bottom: 0.5pt solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-5412c841{width:0.5in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0.5pt solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-5412c842{width:0.5in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0.5pt solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-5412c84a{width:0.5in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-5412c84b{width:0.5in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-5412c84c{width:0.5in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-5412c854{width:0.5in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing='true' class='cl-5419c24e'>
+
+<caption style="display:table-caption;margin:0pt;text-align:center;border-bottom: 0.00pt solid transparent;border-top: 0.00pt solid transparent;border-left: 0.00pt solid transparent;border-right: 0.00pt solid transparent;padding-top:3pt;padding-bottom:3pt;padding-left:3pt;padding-right:3pt;line-height: 1;background-color:transparent;">
+<span id="tab:Table133">Table 13.3: </span><span>Euclidean distances among customers.</span>
+</caption>
+
+<thead><tr style="overflow-wrap:break-word;"><th class="cl-5412c82c"><p class="cl-5412aba8"><span class="cl-540e1548"></span></p></th><th  colspan="3"class="cl-5412c82c"><p class="cl-5412aba8"><span class="cl-540e1548">Customers</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-5412c837"><p class="cl-5412aba8"><span class="cl-540e1548"></span></p></td><td class="cl-5412c840"><p class="cl-5412abbd"><span class="cl-540e1548">A</span></p></td><td class="cl-5412c840"><p class="cl-5412abbd"><span class="cl-540e1548">   B</span></p></td><td class="cl-5412c840"><p class="cl-5412abbd"><span class="cl-540e1548">   C</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-5412c841"><p class="cl-5412aba8"><span class="cl-540e1548">A</span></p></td><td class="cl-5412c842"><p class="cl-5412abbd"><span class="cl-540e1552">0</span></p></td><td class="cl-5412c842"><p class="cl-5412abbd"><span class="cl-540e1552">-</span></p></td><td class="cl-5412c842"><p class="cl-5412abbd"><span class="cl-540e1552">-</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-5412c84a"><p class="cl-5412aba8"><span class="cl-540e1548">B</span></p></td><td class="cl-5412c84b"><p class="cl-5412abbd"><span class="cl-540e1552">10,000</span></p></td><td class="cl-5412c84b"><p class="cl-5412abbd"><span class="cl-540e1552">0</span></p></td><td class="cl-5412c84b"><p class="cl-5412abbd"><span class="cl-540e1552">-</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-5412c84c"><p class="cl-5412aba8"><span class="cl-540e1548">C</span></p></td><td class="cl-5412c854"><p class="cl-5412abbd"><span class="cl-540e1552">10,000</span></p></td><td class="cl-5412c854"><p class="cl-5412abbd"><span class="cl-540e1552">66</span></p></td><td class="cl-5412c854"><p class="cl-5412abbd"><span class="cl-540e1552">0</span></p></td></tr></tbody></table></div>
+<p>If the customer characteristics are standardized to zero mean and unit
+standard deviation, the features appear as in Table <a href="euclidean-distance-for-quantitative-features.html#tab:Table134">13.4</a>, and the
+Euclidean distances are now shown in Table <a href="euclidean-distance-for-quantitative-features.html#tab:Table135">13.5</a>.</p>
+<div class="tabwid"><style>.cl-5440015c{}.cl-54334ab6{font-family:'Arial';font-size:11pt;font-weight:bold;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-54334ac0{font-family:'Arial';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-5437b272{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-5437b286{margin:0;text-align:center;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-5437b287{margin:0;text-align:center;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:25pt;line-height: 1;background-color:transparent;}.cl-5437b288{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:25pt;line-height: 1;background-color:transparent;}.cl-5437cd98{width:2in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-5437cda2{width:0.5in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-5437cdac{width:0.5in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-5437cdad{width:2in;background-color:transparent;vertical-align: middle;border-bottom: 0.5pt solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-5437cdae{width:0.5in;background-color:transparent;vertical-align: middle;border-bottom: 0.5pt solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-5437cdb6{width:2in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0.5pt solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-5437cdb7{width:0.5in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0.5pt solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-5437cdb8{width:2in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-5437cdb9{width:0.5in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-5437cdc0{width:2in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-5437cdc1{width:0.5in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing='true' class='cl-5440015c'>
+
+<caption style="display:table-caption;margin:0pt;text-align:center;border-bottom: 0.00pt solid transparent;border-top: 0.00pt solid transparent;border-left: 0.00pt solid transparent;border-right: 0.00pt solid transparent;padding-top:3pt;padding-bottom:3pt;padding-left:3pt;padding-right:3pt;line-height: 1;background-color:transparent;">
+<span id="tab:Table134">Table 13.4: </span><span>Standardized customer features.</span>
+</caption>
+
+<thead><tr style="overflow-wrap:break-word;"><th class="cl-5437cd98"><p class="cl-5437b272"><span class="cl-54334ab6"></span></p></th><th  colspan="3"class="cl-5437cda2"><p class="cl-5437b286"><span class="cl-54334ab6">Customers</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-5437cdad"><p class="cl-5437b272"><span class="cl-54334ab6">Features</span></p></td><td class="cl-5437cdae"><p class="cl-5437b287"><span class="cl-54334ab6">A</span></p></td><td class="cl-5437cdae"><p class="cl-5437b287"><span class="cl-54334ab6">B</span></p></td><td class="cl-5437cdae"><p class="cl-5437b287"><span class="cl-54334ab6">C</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-5437cdb6"><p class="cl-5437b272"><span class="cl-54334ab6">Age</span></p></td><td class="cl-5437cdb7"><p class="cl-5437b288"><span class="cl-54334ac0">-0.707</span></p></td><td class="cl-5437cdb7"><p class="cl-5437b288"><span class="cl-54334ac0">1.414</span></p></td><td class="cl-5437cdb7"><p class="cl-5437b288"><span class="cl-54334ac0">-0.707</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-5437cdb8"><p class="cl-5437b272"><span class="cl-54334ab6">Years of education</span></p></td><td class="cl-5437cdb9"><p class="cl-5437b288"><span class="cl-54334ac0">-0.707</span></p></td><td class="cl-5437cdb9"><p class="cl-5437b288"><span class="cl-54334ac0">-4.950</span></p></td><td class="cl-5437cdb9"><p class="cl-5437b288"><span class="cl-54334ac0">-0.707</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-5437cdb8"><p class="cl-5437b272"><span class="cl-54334ab6">Credit rating</span></p></td><td class="cl-5437cdb9"><p class="cl-5437b288"><span class="cl-54334ac0">-0.863</span></p></td><td class="cl-5437cdb9"><p class="cl-5437b288"><span class="cl-54334ac0">7.348</span></p></td><td class="cl-5437cdb9"><p class="cl-5437b288"><span class="cl-54334ac0">0.000</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-5437cdc0"><p class="cl-5437b272"><span class="cl-54334ab6">Annual income</span></p></td><td class="cl-5437cdc1"><p class="cl-5437b288"><span class="cl-54334ac0">-1.411</span></p></td><td class="cl-5437cdc1"><p class="cl-5437b288"><span class="cl-54334ac0">0.707</span></p></td><td class="cl-5437cdc1"><p class="cl-5437b288"><span class="cl-54334ac0">0.707</span></p></td></tr></tbody></table></div>
+<div class="tabwid"><style>.cl-546748f2{}.cl-545b3580{font-family:'Arial';font-size:11pt;font-weight:bold;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-545b358a{font-family:'Arial';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-54601bd6{margin:0;text-align:center;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-54601be0{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-54601be1{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:25pt;line-height: 1;background-color:transparent;}.cl-546037ba{width:0.5in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-546037c4{width:0.5in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-546037c5{width:0.5in;background-color:transparent;vertical-align: middle;border-bottom: 0.5pt solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-546037c6{width:0.5in;background-color:transparent;vertical-align: middle;border-bottom: 0.5pt solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-546037ce{width:0.5in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0.5pt solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-546037cf{width:0.5in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0.5pt solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-546037d8{width:0.5in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-546037d9{width:0.5in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-546037e2{width:0.5in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-546037e3{width:0.5in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing='true' class='cl-546748f2'>
+
+<caption style="display:table-caption;margin:0pt;text-align:center;border-bottom: 0.00pt solid transparent;border-top: 0.00pt solid transparent;border-left: 0.00pt solid transparent;border-right: 0.00pt solid transparent;padding-top:3pt;padding-bottom:3pt;padding-left:3pt;padding-right:3pt;line-height: 1;background-color:transparent;">
+<span id="tab:Table135">Table 13.5: </span><span>Euclidean distances using standardized features.</span>
+</caption>
+
+<thead><tr style="overflow-wrap:break-word;"><th class="cl-546037ba"><p class="cl-54601bd6"><span class="cl-545b3580"></span></p></th><th  colspan="3"class="cl-546037ba"><p class="cl-54601bd6"><span class="cl-545b3580">Customers</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-546037c5"><p class="cl-54601bd6"><span class="cl-545b3580"></span></p></td><td class="cl-546037c6"><p class="cl-54601be1"><span class="cl-545b3580">A</span></p></td><td class="cl-546037c6"><p class="cl-54601be1"><span class="cl-545b3580">B</span></p></td><td class="cl-546037c6"><p class="cl-54601be1"><span class="cl-545b3580">C</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-546037ce"><p class="cl-54601bd6"><span class="cl-545b3580">A</span></p></td><td class="cl-546037cf"><p class="cl-54601be1"><span class="cl-545b358a">0.000</span></p></td><td class="cl-546037cf"><p class="cl-54601be1"><span class="cl-545b358a">-</span></p></td><td class="cl-546037cf"><p class="cl-54601be1"><span class="cl-545b358a">-</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-546037d8"><p class="cl-54601bd6"><span class="cl-545b3580">B</span></p></td><td class="cl-546037d9"><p class="cl-54601be1"><span class="cl-545b358a">9.717</span></p></td><td class="cl-546037d9"><p class="cl-54601be1"><span class="cl-545b358a">0.000</span></p></td><td class="cl-546037d9"><p class="cl-54601be1"><span class="cl-545b358a">-</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-546037e2"><p class="cl-54601bd6"><span class="cl-545b3580">C</span></p></td><td class="cl-546037e3"><p class="cl-54601be1"><span class="cl-545b358a">2.290</span></p></td><td class="cl-546037e3"><p class="cl-54601be1"><span class="cl-545b358a">8.746</span></p></td><td class="cl-546037e3"><p class="cl-54601be1"><span class="cl-545b358a">0.000</span></p></td></tr></tbody></table></div>
+<p>By standardizing the features, customers A and C are shown to be closer
+than customers B and C, which makes more sense.</p>
+<p>Another more subtle problem occurs when there are attributes that are
+highly correlated with one another. For example, measures such as
+horsepower, engine displacement, weight, and length might be used to
+form clusters of automobiles based on their physical characteristics.
+These variables are likely to be correlated with one another, and highly
+correlated variables will have more weight in measuring distance. One
+remedy is to run principal components on the attributes to form
+uncorrelated measures before clustering. The analysis proceeds in two
+stages: apply principal components to a correlation matrix of the raw
+data and then submit the component scores to cluster analysis.</p>
+<div id="manhattan-distance" class="section level3 unnumbered hasAnchor">
+<h3>Manhattan distance<a href="euclidean-distance-for-quantitative-features.html#manhattan-distance" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Manhattan distance captures the distance among rows of data by
+aggregating the absolute differences in values of the attributes. The
+formula for Manhattan distance is shown in equation 13.2:</p>
+<p><span class="math display">\[
+\begin{aligned}
+d(r_1,r_j) &amp;= \sqrt{\sum_{t=1}^p|r_1-r_j|}
+\end{aligned}
+\tag{13.2}
+\]</span></p>
+<p>The same comments about standardized data before clustering discussed
+with Euclidean distances apply to Manhattan distances.</p>
+<p>Results obtained using Euclidean versus Manhattan distances should give
+similar results in most cases. However, if there are a few observations
+with extreme values, Manhattan distance was a better alternative to
+Euclidean distance when the number of dimensions is 20 or more <span class="citation">(<a href="#ref-Aggarwal2001" role="doc-biblioref">A. H. Aggarwal C. C. and Keim 2001</a>)</span>.</p>
+</div>
+<div id="cosine-similarity" class="section level3 unnumbered hasAnchor">
+<h3>Cosine similarity<a href="euclidean-distance-for-quantitative-features.html#cosine-similarity" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>A matrix with observations in rows and variables in columns is the most
+common way of representing a data set. Multivariate data can also be
+structured as vectors with a direction and length. Cosine similarity is
+the angle between two vectors. When the two vectors point in the same
+direction, the cosine is 1.0, but if the two vectors are at right
+angles, the cosine is 0.0, and if the vectors are exactly opposite, the
+cosine is -1.0. Consider the following data table with three
+observations and two variables shown in Table <a href="euclidean-distance-for-quantitative-features.html#tab:Table136">13.6</a>. This data can be
+converted into two vectors in three dimensions
+shown in Figure <a href="euclidean-distance-for-quantitative-features.html#fig:Image136">13.6</a>.</p>
+<div class="tabwid"><style>.cl-548804e8{}.cl-547c96d0{font-family:'Arial';font-size:11pt;font-weight:bold;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-547c96e4{font-family:'Arial';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-54813550{margin:0;text-align:center;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-54815044{width:0.5in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-54815045{width:0.5in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-5481504e{width:0.5in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing='true' class='cl-548804e8'>
+
+<caption style="display:table-caption;margin:0pt;text-align:center;border-bottom: 0.00pt solid transparent;border-top: 0.00pt solid transparent;border-left: 0.00pt solid transparent;border-right: 0.00pt solid transparent;padding-top:3pt;padding-bottom:3pt;padding-left:3pt;padding-right:3pt;line-height: 1;background-color:transparent;">
+<span id="tab:Table136">Table 13.6: </span><span>A simple data table.</span>
+</caption>
+
+<thead><tr style="overflow-wrap:break-word;"><th class="cl-54815044"><p class="cl-54813550"><span class="cl-547c96d0">Obs</span></p></th><th class="cl-54815044"><p class="cl-54813550"><span class="cl-547c96d0">X1</span></p></th><th class="cl-54815044"><p class="cl-54813550"><span class="cl-547c96d0">X2</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-54815045"><p class="cl-54813550"><span class="cl-547c96e4">1</span></p></td><td class="cl-54815045"><p class="cl-54813550"><span class="cl-547c96e4">5</span></p></td><td class="cl-54815045"><p class="cl-54813550"><span class="cl-547c96e4">8</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-54815045"><p class="cl-54813550"><span class="cl-547c96e4">2</span></p></td><td class="cl-54815045"><p class="cl-54813550"><span class="cl-547c96e4">5</span></p></td><td class="cl-54815045"><p class="cl-54813550"><span class="cl-547c96e4">1</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-5481504e"><p class="cl-54813550"><span class="cl-547c96e4">3</span></p></td><td class="cl-5481504e"><p class="cl-54813550"><span class="cl-547c96e4">1</span></p></td><td class="cl-5481504e"><p class="cl-54813550"><span class="cl-547c96e4">5</span></p></td></tr></tbody></table></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:Image136"></span>
+<img src="Images/Image136.png" alt="Data Vectors from Table 13.6 in 3-dimensions." width="45%" style="background-color: #9ecff7; padding:1px; display: inline-block;" />
+<p class="caption">
+Figure 13.6: Data Vectors from Table 13.6 in 3-dimensions.
+</p>
+</div>
+<p>Equation 13.3 shows the formula for computing cosine similarity.</p>
+<p><span class="math display">\[
+\begin{aligned}
+\text { cosine similarity } &amp;=\frac{\sum_i^n A_i \times B_i}{\sqrt{\sum_i^n A_i^2} \sqrt{\sum_i^n B_i^2}} \\
+\small\text A_i \; and \;B_i &amp;= \small\text{components of the vectors A and B, and}\\
+\small\text n &amp;= \small\text{number of observations}  
+\end{aligned}
+\tag{13.3}
+\]</span></p>
+<p>Cosine distance is useful in text analysis where the frequency of terms
+is placed in multiple vectors and image comparison. For example,
+consider the four sets of words that are derived from descriptions of
+automobiles shown in Table <a href="euclidean-distance-for-quantitative-features.html#tab:Table137">13.7</a>.</p>
+<div class="tabwid"><style>.cl-54badb2a{}.cl-54ae18e0{font-family:'Arial';font-size:11pt;font-weight:bold;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-54ae18ea{font-family:'Arial';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-54b27624{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-54b27638{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-54b27639{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:20pt;line-height: 1;background-color:transparent;}.cl-54b2917c{width:0.8in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-54b29186{width:0.8in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-54b29190{width:0.8in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-54b29191{width:0.8in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-54b2919a{width:0.8in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-54b2919b{width:0.8in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing='true' class='cl-54badb2a'>
+
+<caption style="display:table-caption;margin:0pt;text-align:center;border-bottom: 0.00pt solid transparent;border-top: 0.00pt solid transparent;border-left: 0.00pt solid transparent;border-right: 0.00pt solid transparent;padding-top:3pt;padding-bottom:3pt;padding-left:3pt;padding-right:3pt;line-height: 1;background-color:transparent;">
+<span id="tab:Table137">Table 13.7: </span><span>Word frequencies in automobile descriptions.</span>
+</caption>
+
+<thead><tr style="overflow-wrap:break-word;"><th class="cl-54b2917c"><p class="cl-54b27624"><span class="cl-54ae18e0">Autos</span></p></th><th class="cl-54b29186"><p class="cl-54b27638"><span class="cl-54ae18e0">quick</span></p></th><th class="cl-54b29186"><p class="cl-54b27638"><span class="cl-54ae18e0">mileage</span></p></th><th class="cl-54b29186"><p class="cl-54b27638"><span class="cl-54ae18e0">brake</span></p></th><th class="cl-54b29186"><p class="cl-54b27638"><span class="cl-54ae18e0">handling</span></p></th><th class="cl-54b29186"><p class="cl-54b27638"><span class="cl-54ae18e0">excellent</span></p></th><th class="cl-54b29186"><p class="cl-54b27638"><span class="cl-54ae18e0">style</span></p></th><th class="cl-54b29186"><p class="cl-54b27638"><span class="cl-54ae18e0">comfort</span></p></th><th class="cl-54b29186"><p class="cl-54b27638"><span class="cl-54ae18e0">quiet</span></p></th><th class="cl-54b29186"><p class="cl-54b27638"><span class="cl-54ae18e0">value</span></p></th><th class="cl-54b29186"><p class="cl-54b27638"><span class="cl-54ae18e0">economy</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-54b29190"><p class="cl-54b27624"><span class="cl-54ae18ea">Auto 1</span></p></td><td class="cl-54b29191"><p class="cl-54b27639"><span class="cl-54ae18ea">5</span></p></td><td class="cl-54b29191"><p class="cl-54b27639"><span class="cl-54ae18ea">0</span></p></td><td class="cl-54b29191"><p class="cl-54b27639"><span class="cl-54ae18ea">3</span></p></td><td class="cl-54b29191"><p class="cl-54b27639"><span class="cl-54ae18ea">0</span></p></td><td class="cl-54b29191"><p class="cl-54b27639"><span class="cl-54ae18ea">2</span></p></td><td class="cl-54b29191"><p class="cl-54b27639"><span class="cl-54ae18ea">0</span></p></td><td class="cl-54b29191"><p class="cl-54b27639"><span class="cl-54ae18ea">0</span></p></td><td class="cl-54b29191"><p class="cl-54b27639"><span class="cl-54ae18ea">2</span></p></td><td class="cl-54b29191"><p class="cl-54b27639"><span class="cl-54ae18ea">0</span></p></td><td class="cl-54b29191"><p class="cl-54b27639"><span class="cl-54ae18ea">0</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-54b29190"><p class="cl-54b27624"><span class="cl-54ae18ea">Auto 2</span></p></td><td class="cl-54b29191"><p class="cl-54b27639"><span class="cl-54ae18ea">3</span></p></td><td class="cl-54b29191"><p class="cl-54b27639"><span class="cl-54ae18ea">0</span></p></td><td class="cl-54b29191"><p class="cl-54b27639"><span class="cl-54ae18ea">2</span></p></td><td class="cl-54b29191"><p class="cl-54b27639"><span class="cl-54ae18ea">0</span></p></td><td class="cl-54b29191"><p class="cl-54b27639"><span class="cl-54ae18ea">1</span></p></td><td class="cl-54b29191"><p class="cl-54b27639"><span class="cl-54ae18ea">1</span></p></td><td class="cl-54b29191"><p class="cl-54b27639"><span class="cl-54ae18ea">0</span></p></td><td class="cl-54b29191"><p class="cl-54b27639"><span class="cl-54ae18ea">1</span></p></td><td class="cl-54b29191"><p class="cl-54b27639"><span class="cl-54ae18ea">0</span></p></td><td class="cl-54b29191"><p class="cl-54b27639"><span class="cl-54ae18ea">1</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-54b29190"><p class="cl-54b27624"><span class="cl-54ae18ea">Auto 3</span></p></td><td class="cl-54b29191"><p class="cl-54b27639"><span class="cl-54ae18ea">0</span></p></td><td class="cl-54b29191"><p class="cl-54b27639"><span class="cl-54ae18ea">7</span></p></td><td class="cl-54b29191"><p class="cl-54b27639"><span class="cl-54ae18ea">0</span></p></td><td class="cl-54b29191"><p class="cl-54b27639"><span class="cl-54ae18ea">2</span></p></td><td class="cl-54b29191"><p class="cl-54b27639"><span class="cl-54ae18ea">1</span></p></td><td class="cl-54b29191"><p class="cl-54b27639"><span class="cl-54ae18ea">0</span></p></td><td class="cl-54b29191"><p class="cl-54b27639"><span class="cl-54ae18ea">0</span></p></td><td class="cl-54b29191"><p class="cl-54b27639"><span class="cl-54ae18ea">3</span></p></td><td class="cl-54b29191"><p class="cl-54b27639"><span class="cl-54ae18ea">0</span></p></td><td class="cl-54b29191"><p class="cl-54b27639"><span class="cl-54ae18ea">0</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-54b2919a"><p class="cl-54b27624"><span class="cl-54ae18ea">Auto 4</span></p></td><td class="cl-54b2919b"><p class="cl-54b27639"><span class="cl-54ae18ea">10</span></p></td><td class="cl-54b2919b"><p class="cl-54b27639"><span class="cl-54ae18ea">0</span></p></td><td class="cl-54b2919b"><p class="cl-54b27639"><span class="cl-54ae18ea">6</span></p></td><td class="cl-54b2919b"><p class="cl-54b27639"><span class="cl-54ae18ea">0</span></p></td><td class="cl-54b2919b"><p class="cl-54b27639"><span class="cl-54ae18ea">4</span></p></td><td class="cl-54b2919b"><p class="cl-54b27639"><span class="cl-54ae18ea">0</span></p></td><td class="cl-54b2919b"><p class="cl-54b27639"><span class="cl-54ae18ea">0</span></p></td><td class="cl-54b2919b"><p class="cl-54b27639"><span class="cl-54ae18ea">4</span></p></td><td class="cl-54b2919b"><p class="cl-54b27639"><span class="cl-54ae18ea">0</span></p></td><td class="cl-54b2919b"><p class="cl-54b27639"><span class="cl-54ae18ea">0</span></p></td></tr></tbody></table></div>
+<p>Applying equation 13.3 to the rows in the table yields the
+similarity matrix in table <a href="euclidean-distance-for-quantitative-features.html#tab:Table138">13.8</a>.</p>
+<div class="tabwid"><style>.cl-54e20ab0{}.cl-54d7026e{font-family:'Arial';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-54d70278{font-family:'Arial';font-size:11pt;font-weight:bold;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-54db486a{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-54db487e{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-54db6340{width:0.8in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-54db634a{width:0.8in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-54db6354{width:0.8in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-54db6355{width:0.8in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-54db635e{width:0.8in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing='true' class='cl-54e20ab0'>
+
+<caption style="display:table-caption;margin:0pt;text-align:center;border-bottom: 0.00pt solid transparent;border-top: 0.00pt solid transparent;border-left: 0.00pt solid transparent;border-right: 0.00pt solid transparent;padding-top:3pt;padding-bottom:3pt;padding-left:3pt;padding-right:3pt;line-height: 1;background-color:transparent;">
+<span id="tab:Table138">Table 13.8: </span><span>Example similarity matrix.</span>
+</caption>
+
+<thead><tr style="overflow-wrap:break-word;"><th class="cl-54db6340"><p class="cl-54db486a"><span class="cl-54d7026e"></span></p></th><th class="cl-54db6340"><p class="cl-54db486a"><span class="cl-54d70278">Auto 1</span></p></th><th class="cl-54db6340"><p class="cl-54db486a"><span class="cl-54d70278">Auto 2</span></p></th><th class="cl-54db6340"><p class="cl-54db486a"><span class="cl-54d70278">Auto 3</span></p></th><th class="cl-54db6340"><p class="cl-54db486a"><span class="cl-54d70278">Auto 4</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-54db634a"><p class="cl-54db487e"><span class="cl-54d70278">Auto 1</span></p></td><td class="cl-54db6354"><p class="cl-54db486a"><span class="cl-54d7026e">1.000</span></p></td><td class="cl-54db6354"><p class="cl-54db486a"><span class="cl-54d7026e"></span></p></td><td class="cl-54db6354"><p class="cl-54db486a"><span class="cl-54d7026e"></span></p></td><td class="cl-54db6354"><p class="cl-54db486a"><span class="cl-54d7026e"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-54db634a"><p class="cl-54db487e"><span class="cl-54d70278">Auto 2</span></p></td><td class="cl-54db6354"><p class="cl-54db486a"><span class="cl-54d7026e">0.940</span></p></td><td class="cl-54db6354"><p class="cl-54db486a"><span class="cl-54d7026e">1.000</span></p></td><td class="cl-54db6354"><p class="cl-54db486a"><span class="cl-54d7026e"></span></p></td><td class="cl-54db6354"><p class="cl-54db486a"><span class="cl-54d7026e"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-54db634a"><p class="cl-54db487e"><span class="cl-54d70278">Auto 3</span></p></td><td class="cl-54db6354"><p class="cl-54db486a"><span class="cl-54d7026e">0.160</span></p></td><td class="cl-54db6354"><p class="cl-54db486a"><span class="cl-54d7026e">0.120</span></p></td><td class="cl-54db6354"><p class="cl-54db486a"><span class="cl-54d7026e">1.000</span></p></td><td class="cl-54db6354"><p class="cl-54db486a"><span class="cl-54d7026e"></span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-54db6355"><p class="cl-54db487e"><span class="cl-54d70278">Auto 4</span></p></td><td class="cl-54db635e"><p class="cl-54db486a"><span class="cl-54d7026e">1.000</span></p></td><td class="cl-54db635e"><p class="cl-54db486a"><span class="cl-54d7026e">0.940</span></p></td><td class="cl-54db635e"><p class="cl-54db486a"><span class="cl-54d7026e">0.160</span></p></td><td class="cl-54db635e"><p class="cl-54db486a"><span class="cl-54d7026e">1.000</span></p></td></tr></tbody></table></div>
+<p>This shows that Auto 1's description had much in common with Auto 2's
+description but that Auto 3 differed from Auto 1 and Auto 2. Auto 4,
+despite having exactly twice the frequencies of Auto 1 is still scored
+as identical to Auto 1. If Euclidean distance were used, Autos 1 and 2
+would not be found to have zero distance.</p>
+</div>
+<div id="converting-cosine-similarity-to-distance" class="section level3 unnumbered hasAnchor">
+<h3>Converting cosine similarity to distance<a href="euclidean-distance-for-quantitative-features.html#converting-cosine-similarity-to-distance" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Since some clustering techniques require distances or dissimilarity
+measures rather than similarity metrics, it may be necessary to convert
+cosine similarity to a distance. There have been several suggestions on
+converting from similarity to distance, and the most common one is
+simply using equation 13.4.</p>
+<p><span class="math display">\[
+\begin{aligned}
+\operatorname{Distance}(A, B)=\sqrt{2(1-\text { cosine similarity }(A, B))}
+\end{aligned}
+\tag{13.4}
+\]</span></p>
+<p>Tanimoto<a href="#fn19" class="footnote-ref" id="fnref19"><sup>19</sup></a> similarity is one of several measures useful for comparing
+binary vectors. The measure is calculated by enumerating binary values
+in pairs of records (equation 13.5).</p>
+<p><span class="math display">\[
+\begin{align}
+\text {Similarity } &amp;=\frac{a}{b+c+d} \\
+\small\text {Where d}  \: &amp;= \small\text{# of columns where records A and B both have 1&#39;s,} \\
+\small\text b             &amp;=  \small\text {# of columns where record  A has a 1 and B has a 0 and,} \\  \small\text c &amp;= \small\text {# of columns where record B  has  a 1 and  A has a  0 }.
+\end{align}
+\tag{13.5}
+\]</span></p>
+<p>Note that columns where both records have zeros are not counted. As an
+illustration, consider comparing which medical tests that of a set of
+three patients had performed. The data is shown in Table <a href="euclidean-distance-for-quantitative-features.html#tab:Table139">13.9</a>. If two
+patients have had a specific test, this contributes to similarity, but
+if both did not, similarity is not increased.</p>
+<div class="tabwid"><style>.cl-5512b05c{}.cl-55075bc6{font-family:'Arial';font-size:11pt;font-weight:bold;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-55075bd0{font-family:'Arial';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-550bc396{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-550bc3a0{margin:0;text-align:center;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-550bdf2a{width:0.8in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-550bdf34{width:0.8in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-550bdf35{width:0.8in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-550bdf36{width:0.8in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-550bdf3e{width:0.8in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-550bdf3f{width:0.8in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-550bdf40{width:0.8in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(255, 255, 255, 0.00);border-top: 0 solid rgba(255, 255, 255, 0.00);border-left: 0 solid rgba(255, 255, 255, 0.00);border-right: 0 solid rgba(255, 255, 255, 0.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing='true' class='cl-5512b05c'>
+
+<caption style="display:table-caption;margin:0pt;text-align:center;border-bottom: 0.00pt solid transparent;border-top: 0.00pt solid transparent;border-left: 0.00pt solid transparent;border-right: 0.00pt solid transparent;padding-top:3pt;padding-bottom:3pt;padding-left:3pt;padding-right:3pt;line-height: 1;background-color:transparent;">
+<span id="tab:Table139">Table 13.9: </span><span>Example binary data matrix.</span>
+</caption>
+
+<thead><tr style="overflow-wrap:break-word;"><th class="cl-550bdf2a"><p class="cl-550bc396"><span class="cl-55075bc6">Name</span></p></th><th class="cl-550bdf34"><p class="cl-550bc3a0"><span class="cl-55075bc6">Test1</span></p></th><th class="cl-550bdf34"><p class="cl-550bc3a0"><span class="cl-55075bc6">Test2</span></p></th><th class="cl-550bdf34"><p class="cl-550bc3a0"><span class="cl-55075bc6">Test3</span></p></th><th class="cl-550bdf34"><p class="cl-550bc3a0"><span class="cl-55075bc6">Test4</span></p></th><th class="cl-550bdf34"><p class="cl-550bc3a0"><span class="cl-55075bc6">Test5</span></p></th><th class="cl-550bdf34"><p class="cl-550bc3a0"><span class="cl-55075bc6">Test6</span></p></th><th class="cl-550bdf34"><p class="cl-550bc3a0"><span class="cl-55075bc6">Test7</span></p></th><th class="cl-550bdf34"><p class="cl-550bc3a0"><span class="cl-55075bc6">Test8</span></p></th><th class="cl-550bdf34"><p class="cl-550bc3a0"><span class="cl-55075bc6">Test9</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-550bdf35"><p class="cl-550bc396"><span class="cl-55075bd0">Smith</span></p></td><td class="cl-550bdf36"><p class="cl-550bc3a0"><span class="cl-55075bd0">1</span></p></td><td class="cl-550bdf36"><p class="cl-550bc3a0"><span class="cl-55075bd0">1</span></p></td><td class="cl-550bdf36"><p class="cl-550bc3a0"><span class="cl-55075bd0">1</span></p></td><td class="cl-550bdf36"><p class="cl-550bc3a0"><span class="cl-55075bd0">0</span></p></td><td class="cl-550bdf36"><p class="cl-550bc3a0"><span class="cl-55075bd0">1</span></p></td><td class="cl-550bdf36"><p class="cl-550bc3a0"><span class="cl-55075bd0">1</span></p></td><td class="cl-550bdf36"><p class="cl-550bc3a0"><span class="cl-55075bd0">0</span></p></td><td class="cl-550bdf36"><p class="cl-550bc3a0"><span class="cl-55075bd0">0</span></p></td><td class="cl-550bdf36"><p class="cl-550bc3a0"><span class="cl-55075bd0">0</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-550bdf35"><p class="cl-550bc396"><span class="cl-55075bd0">Jones</span></p></td><td class="cl-550bdf36"><p class="cl-550bc3a0"><span class="cl-55075bd0">1</span></p></td><td class="cl-550bdf36"><p class="cl-550bc3a0"><span class="cl-55075bd0">1</span></p></td><td class="cl-550bdf36"><p class="cl-550bc3a0"><span class="cl-55075bd0">1</span></p></td><td class="cl-550bdf36"><p class="cl-550bc3a0"><span class="cl-55075bd0">0</span></p></td><td class="cl-550bdf36"><p class="cl-550bc3a0"><span class="cl-55075bd0">1</span></p></td><td class="cl-550bdf36"><p class="cl-550bc3a0"><span class="cl-55075bd0">0</span></p></td><td class="cl-550bdf36"><p class="cl-550bc3a0"><span class="cl-55075bd0">0</span></p></td><td class="cl-550bdf36"><p class="cl-550bc3a0"><span class="cl-55075bd0">0</span></p></td><td class="cl-550bdf36"><p class="cl-550bc3a0"><span class="cl-55075bd0">1</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-550bdf3e"><p class="cl-550bc396"><span class="cl-55075bd0">Baker</span></p></td><td class="cl-550bdf3f"><p class="cl-550bc3a0"><span class="cl-55075bd0">1</span></p></td><td class="cl-550bdf3f"><p class="cl-550bc3a0"><span class="cl-55075bd0">0</span></p></td><td class="cl-550bdf3f"><p class="cl-550bc3a0"><span class="cl-55075bd0">1</span></p></td><td class="cl-550bdf3f"><p class="cl-550bc3a0"><span class="cl-55075bd0">1</span></p></td><td class="cl-550bdf3f"><p class="cl-550bc3a0"><span class="cl-55075bd0">0</span></p></td><td class="cl-550bdf3f"><p class="cl-550bc3a0"><span class="cl-55075bd0">1</span></p></td><td class="cl-550bdf3f"><p class="cl-550bc3a0"><span class="cl-55075bd0">1</span></p></td><td class="cl-550bdf3f"><p class="cl-550bc3a0"><span class="cl-55075bd0">0</span></p></td><td class="cl-550bdf3f"><p class="cl-550bc3a0"><span class="cl-55075bd0">0</span></p></td></tr></tbody><tfoot><tr style="overflow-wrap:break-word;"><td  colspan="10"class="cl-550bdf40"><p class="cl-550bc396"><span class="cl-55075bd0">1 = medical test performed, 0 = medical test not performed</span></p></td></tr></tfoot></table></div>
+<p>For Smith and Jones, d = 4, b=1, and c=1. So, the Tanimoto similarities
+are computed as follows:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\text { For Smith and Jones: } d =4, b &amp;=1, \text { and } c=1,\\\ \text {so Tanimoto similarity }&amp;=\frac{4}{1+1+4} =.67  \\ \\
+\text { For Smith and Baker: } d =3, b &amp;=2, \text { and } c=2, \\\ \text { so Tanimoto similarity } &amp;=\frac{3}{2+2+3} = .43  \\ \\
+\text { For Jones and Baker: } d =2, b&amp;=3, \text { and } c=3,  \\\ \text { so Tanimoto similarity } &amp;=\frac{2}{2+2+3} = .43
+\end{aligned}
+\]</span></p>
+<p>The range of the Tanimoto coefficient is 0.0 to 1.0, so to convert to a
+distance measure, use equation 13.6.</p>
+<p><span class="math display">\[
+\begin{aligned}
+\text {Distance(A, B) = 1 - Tanimoto similarity(A, B)}
+\end{aligned}
+\tag{13.-6}
+\]</span></p>
+</div>
+</div>
+<h3>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-Aggarwal2001" class="csl-entry">
+Aggarwal, Alexander Hinneburg, C. C., and Daniel A. Keim. 2001. <span>“On the Surprising Behavior of Distance Metrics.”</span> <em>Lecture Notes in Computer Science</em>, 347–56.
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="19">
+<li id="fn19"><p>Tanimoto distance is identical to Jaccard distance. These were
+developed independently and reports may use the name Tanimoto or
+Jaccard<a href="euclidean-distance-for-quantitative-features.html#fnref19" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="select-a-measure-of-similarity-or-distance.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="select-a-clustering-method.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "section",
+"scroll_highlight": true
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

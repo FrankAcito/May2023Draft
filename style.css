@@ -1,0 +1,266 @@
+book.font-family {
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 14pt;
+}
+
+ul {
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 14pt;
+}
+
+.apalike-reference {
+padding-left: 36px
+    text-indent: -36px
+font-family: Helvetica, Arial, sans-serif;
+font-size: 14pt;
+}
+
+
+imgborder {
+  border: 5px solid #555;
+}
+
+
+book.bib {
+ margin-left:  .5in;
+ text-indent:  -2em;
+}
+
+pa {
+  padding-left: 10px;
+  font-size: 14pt;
+  }
+pb {
+  padding-left: 30px;
+  font-size: 14pt;
+  }
+pc {
+  padding-left: 10px;
+  border-top: 1.0px solid navy;
+  border-bottom: 1.0px solid navy;
+  font-size: 14pt;
+  }
+
+a {
+  color: black;
+  font-size: 14pt;
+}
+
+display-block {
+  color: black;
+  font-size: 14pt;
+}
+
+anchor-section {
+  color: black;
+  font-size: 14pt;
+}
+
+p {
+  color: black;
+  font-size: 14pt;
+}
+
+psmall {
+  color: black;
+  font-size: 10pt;
+}
+
+citation {
+  color: black;
+  font-size: 14pt;
+}
+
+footnote-ref {
+  color: black;
+  font-size: 14pt;
+}
+
+
+
+
+.p code {
+  white-space: inherit;aption
+}
+
+h1 {
+  color: navy;
+  border-bottom: 1.5px solid navy;
+  font-size: 100%;
+}
+h2 {
+  color: navy;
+  font-size: 85%;
+  border-bottom: 1.0px solid navy;
+  }
+
+h3 {
+  color: navy;
+  font-size: 65%;
+  border-bottom: .5px solid navy;
+}
+
+h4 {
+  color: navy;
+  font-size: 50%;
+  border-bottom: .5px solid navy;
+}
+
+
+h5 {
+  color: navy;
+  font-size: 25%;
+}
+.pre {
+  word-break: normal;
+  word-wrap: normal;
+}
+.pre code {
+  white-space: inherit;
+}
+
+
+}
+inset {
+   line-height: 95%;
+   background-color: #F5F5F5;
+   font-size: 50%
+   text-align: left;
+   margin-right: 5px;
+   margin-left: 450px;
+   border: 0.1rem outset black;
+   padding-top: .1rem;
+   padding-bottom: .1rem;
+   padding-left: .25rem;
+   padding-right: .25rem;
+}
+
+caption {
+    text-align: left;
+    margin-bottom: 5px;
+    text-transform: lowercase;
+    font-size: 14pt;
+    padding: 5px;
+    letter-spacing: 10px;
+    font-weight: bold;
+}
+inset100 {
+   line-height: 100%;
+   background-color: #F5F5F5;
+   font-size: 100%
+   text-align: left;
+   margin-right: 5px;
+   margin-left: 100px;
+}
+
+.insetNoBorder {
+   line-height: 75%;
+   background-color: white;
+   font-family: "Times New Roman", Times, serif;
+   margin-left: 50px;
+   font-size: 12pt;
+}
+
+casestudy {
+   line-height: 100%;
+   background-color: white;
+   font-family: "Tahoma";
+   text-align: left;
+   font-size: 9pt;
+   border: 0.1rem outset black;
+   margin-right: 15px;
+   margin-left: 15px;
+   padding-top: .1rem;
+   padding-bottom: .1rem;
+   padding-left: .25rem;
+   padding-right: .25rem;
+}
+
+
+
+
+.nobullet li {
+  list-style-type: none;
+  line-height: 125%;
+  font-size: 14pt;
+}
+
+book-body {
+  color: black;
+  background-color: white;
+  font-size: 14t;
+ }
+
+book-body p.caption {
+  color: black;
+  background-color: white;
+  padding-left: 20px;
+  font-size: 14pt;
+  }
+
+
+
+.bigbox {
+  background-color:white;
+  padding: 1em;
+  border-width: 2px;
+  border: black;
+}
+
+.box {
+  float: right;
+  font-size: 11pt;
+  font-style: italic;
+  line-height: 1.0;
+  margin-right: 15px;
+  margin-left: 5px;
+  width: 250px;
+  border-radius: 5px;
+  background-color:#F8F9F9;
+  padding: 1em;
+  border: thin silver solid;
+}
+
+.video {
+  width: 620px;
+  height: 480px;
+}
+
+
+.chapterintroduction {
+  padding: 1em 1em 1em 4em;
+  margin-bottom: 2px;
+  background: black;
+  border-top: 2px solid #0000ff;
+  border-bottom: 2px solid #0000ff;
+  background-position: 0.5em 1.5em;
+  }
+
+
+.book .book-summary {
+  background-color: #5C0000;
+  font-size: 9pt;
+  }
+
+
+
+.book .book-summary ul.summary li a {
+  padding: 5px 5px 5px 5px;
+  color:  #ffffff;
+  font-size: 9pt;
+
+}
+
+.book .book-summary ul.summary li.active:a {
+  color: #ffffff;
+  font-size: 9pt;
+  }
+
+.book .book-summary ul.summary li a:hover {
+  background-color: #99afc4;
+  color: #3b556e;
+  font-size: 9pt;
+
+}
+
+
